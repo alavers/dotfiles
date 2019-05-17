@@ -39,3 +39,35 @@ endsnippet
 snippet ima "import * as " b
 import * as $1 from '$2'
 endsnippet
+
+## Mine
+snippet cl "console.log(...)" i
+console.log('>>>', $1)
+endsnippet
+
+snippet cL "console.log(...)" i
+console.log('>>> $1')
+endsnippet
+
+snippet clj "JSON.stringify formatted" i
+console.log(JSON.stringify($1, null, 2))
+endsnippet
+
+snippet if "if statement" i
+if ($1) {
+  $2
+}$3
+endsnippet
+
+snippet el "else statement" i
+else {
+  $1
+}$2
+endsnippet
+
+# Mocha
+snippet desc "Mocha describe"
+describe('`!p snip.rv = fn.split(os.extsep)[0]`', () => {
+	$0
+});
+endsnippet
