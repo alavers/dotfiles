@@ -20,6 +20,7 @@
     set noerrorbells        "don't beep
     set noswapfile
     set nowrap              "turn off line wrapping
+    set nofixendofline      "disable line feed insertion at end of files
     set number              "show current line number
     set relativenumber      "show relative line numbers
     set shiftround          "round indent to a multiple of 'shiftwidth'
@@ -53,17 +54,22 @@
         \ }                                 "javascript intellisense
     Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
     Plug 'fatih/vim-go'                     "go vim tools
+    Plug 'galooshi/vim-import-js'           "js import manager
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
-    Plug 'haron-prime/evening_vim'          "colorscheme with better diff
+    "Plug 'haron-prime/evening_vim'          "colorscheme with better diff
     Plug 'heavenshell/vim-jsdoc'            "jsdoc function comments
     Plug 'itchyny/lightline.vim'            "pretty statusbar and tabbar
-    Plug 'joshdick/onedark.vim'             "colorscheme
+    "Plug 'joshdick/onedark.vim'             "colorscheme
     Plug 'junegunn/fzf.vim'                 "fuzzy file search
     Plug 'kannokanno/previm'                "markdown preview
     Plug 'leafgarland/typescript-vim'       "typescript syntax
+    Plug 'majutsushi/tagbar'                "code outline sidebar
     Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
     Plug 'mileszs/ack.vim'                  "fuzzy file content search
     Plug 'moll/vim-bbye'                    "close
+    Plug 'morhetz/gruvbox'                  "colorscheme
+    Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
+    Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
     Plug 'othree/yajs.vim'                  "javascript syntax
     Plug 'roxma/nvim-completion-manager'    "better than <C-X><C-O>
@@ -80,11 +86,14 @@
         \ 'on': ['NERDTreeToggle',
         \        'NERDTreeFind']
         \ }                                 "file browser sidebar
+    Plug 'shinchu/lightline-gruvbox.vim'    "gruvbox theme for lightline
     Plug 'SirVer/ultisnips'                 "snippets
     Plug 'vim-scripts/BufOnly.vim'          "close all other buffers
     Plug 'w0rp/ale'                         "linter
     call plug#end()
 "}}}
+
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
 " functions {{{
     function! QuickfixToggle()
@@ -127,6 +136,11 @@
     noremap <leader>q :copen 40<cr>
     noremap <leader>a :copen 10<cr>
     noremap <leader>z :call QuickfixToggle()<cr>
+
+    "toggle and grow loclist 
+    noremap <leader>e :lopen 40<cr>
+    noremap <leader>d :lopen 10<cr>
+    noremap <leader>x :lclose<cr>
 
     "cusor behave with wrapped lines
     nnoremap j gj
@@ -180,6 +194,12 @@
     " autocmd FileType yaml setlocal nospell
     autocmd BufEnter *.yml setlocal nospell
     autocmd BufEnter *.yaml setlocal nospell
+
+    " Format JSON
+    nmap <leader>jf :%!python -m json.tool<cr>
+    
+    " Reload syntax
+    noremap <leader>rs :syntax sync fromstart<cr>
 "}}}
 
 "autozimu/LanguageClient-neovim {{{
@@ -187,9 +207,9 @@
     let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ 'dockerfile': ['docker-langserver --stdio'],
-    \ 'typescript': ['javascript-typescript-stdio'],
     \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio', '--try-flow-bin --stdio'],
+    \ 'typescript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
     \ 'python': ['pyls'],
     \ 'go': ['go-langserver'],
     \ }
@@ -211,7 +231,7 @@
 "}}}
 
 "ctrlpvim/ctrlp.vim {{{
-    let g:ctrlp_custom_ignore = 'node_modules'
+    let g:ctrlp_custom_ignore = 'node_modules\|dist\|build\|coverage\'
 "}}}
 
 "geekjuice/vim-mocha {{{
@@ -286,6 +306,34 @@
     :command! -nargs=* F Ack! <args>
 "}}}
 
+"morhetz/gruvbox {{{
+    set background=dark
+    let g:gruvbox_bold=1
+    let g:gruvbox_italic=1
+    let g:gruvbox_underline=1
+    let g:gruvbox_undercurl=1
+    let g:gruvbox_contrast_dark='hard'
+    let g:gruvbox_italicize_comments=1
+    let g:gruvbox_invert_selection=0
+    let g:gruvbox_improved_strings=0
+    let g:gruvbox_improved_warnings=1
+    nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+    nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+    nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+
+    nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+    nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+    nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+"}}}
+
+"mxw/vim-jsx {{{
+    let g:jsx_ext_required = 1
+"}}}
+
+"scrooloose/nerdcommenter {{{
+    let g:NERDSpaceDelims = 1
+"}}}
+
 "scrooloose/nerdtree {{{
     function! ToggleNerdTree()
         if @% != "" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
@@ -297,6 +345,13 @@
 
     noremap <C-n> :NERDTreeToggle<cr>
     nmap <silent> <leader>t :NERDTreeFind<cr>
+
+    let g:NERDTreeIgnore = ['__pycache__$', 'node_modules$', 'dist$', 'build$']
+"}}}
+
+"shinchu/lightline-gruvbox.vim {{{
+    let g:lightline = {}
+    let g:lightline.colorscheme = 'gruvbox'
 "}}}
 
 "SirVer/ultisnips {{{
@@ -306,15 +361,23 @@
     let g:UltiSnipsJumpBackwardTrigger="<C-h>"
 "}}}
 
+"tell-k/vim-autopep8 {{{
+    let g:autopep8_disable_show_diff=1
+    let g:autopep8_on_save = 1
+"}}}
+
 "w0rp/ale {{{
     let g:ale_fix_on_save = 0
     let g:ale_javascript_prettier_use_global = 1
+    let g:ale_typescript_tslint_use_global = 1
+    let g:ale_echo_delay = 1000
 
     " ale forces eslint to run against .ts files, but we don't want it to
-    let g:ale_javascript_eslint_options = '--ignore-pattern *.ts'
+    "let g:ale_javascript_eslint_options = '--ignore-pattern *.ts'
+
 
     "nnoremap <silent> <leader>f :ALEFix<CR>
-    map <leader>f :ALEFix tslint<CR>
+    map <leader>f :ALEFix<CR>
 
     let g:ale_fixers = {
     \   'typescript': ['prettier'],
@@ -324,9 +387,10 @@
     \}
 
     let g:ale_linters = {
-    \   'typescript': ['tslint'],
+    \   'typescript': ['tsserver', 'tslint'],
     \   'javascript': ['eslint'],
     \   'java': ['javac'],
+    \   'python': ['flake8'],
     \}
 "}}}
 
@@ -367,8 +431,7 @@
         " smooch-core-js settings
         let smooch_core_js = matchstr(getcwd(), 'git/smooch-core-js')
         if !empty(smooch_core_js)
-            let g:ctrlp_custom_ignore = 'lib\|dist\|amd'
-            let g:NERDTreeIgnore = ['lib', 'dist', 'amd', 'build']
+            let g:ctrlp_custom_ignore = 'lib\|dist\|amd\'
             let g:mocha_js_command = "!mocha --compilers js:babel-core/register --require ./test-setup.js {spec}"
         endif
 
@@ -381,16 +444,20 @@
         " smooch settings
         let smooch = matchstr(getcwd(), 'git/agent-console')
         if !empty(smooch)
-            let g:ctrlp_custom_ignore = 'node_modules\|dist\|build'
-            let g:NERDTreeIgnore = ['node_modules', 'dist', 'build']
+            let g:NERDTreeIgnore = ['__pycache__$', 'node_modules$', 'dist$', 'build$', 'persist$', 'temp$', 'coverage$', '.nyc_output$']
             let g:ale_fix_on_save = 1
         endif
 
         " smooch-web-private settings
         let smooch_web_private = matchstr(getcwd(), 'git/smooch-web-private')
         if !empty(smooch_web_private)
-            let g:ctrlp_custom_ignore = 'node_modules\|dist\|build'
-            let g:NERDTreeIgnore = ['node_modules', 'dist', 'build']
+            let g:ale_fix_on_save = 0
+        endif
+
+        " smooch/loadtests locust settings
+        let smooch_locust = matchstr(getcwd(), 'git/loadtests/platform/locust')
+        if !empty(smooch_locust)
+            let g:NERDTreeIgnore = ['__pycache__$']
         endif
 
         " let smooch_debuggler = matchstr(getcwd(), 'git/smooch-debuggler')
@@ -409,7 +476,8 @@
     "let g:onedark_termcolors=256
     "let g:onedark_terminal_italics=1
     "colorscheme onedark
-    colorscheme evening
+    "colorscheme evening
+    colorscheme gruvbox
     syntax on
     filetype plugin on
 
@@ -427,8 +495,9 @@
 
     "hi SpellBad ctermfg=www ctermbg=xxx guifg=#yyyyyy guibg=#zzzzzz
     "hi SpellCap ctermfg=www ctermbg=xxx guifg=#yyyyyy guibg=#zzzzzz
-    hi SpellBad ctermbg=052 guibg=5f0000
-    hi SpellCap ctermbg=236 guibg=303030
-    hi Search cterm=NONE ctermfg=NONE ctermbg=058
+    "
+    "hi SpellBad ctermbg=052 guibg=5f0000
+    "hi SpellCap ctermbg=236 guibg=303030
+    "hi Search cterm=NONE ctermfg=NONE ctermbg=058
     
 "}}}
