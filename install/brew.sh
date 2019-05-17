@@ -41,4 +41,6 @@ brew install mongodb
 # install neovim
 brew install neovim/neovim/neovim
 
+# universal ctags
+brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 exit 0
