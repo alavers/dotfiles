@@ -6,8 +6,8 @@ set -g default-terminal "screen-256color"
 
 set -g history-limit 20000
 
-# automatically renumber tmux windows
-set -g renumber-windows on
+# do not automatically renumber tmux windows
+set -g renumber-windows off
 
 # unbind default prefix and set it to Ctrl+a
 unbind C-b
@@ -47,8 +47,13 @@ set-option -g set-titles-string "#T - #W"
 # enable pbcopy and pbpaste
 # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/blob/master/README.md
 
-# dont rename windows
-set-option -g allow-rename off
+# Automatically rename windows to current dir 
+set-option -g status-interval 5
+set-option -g automatic-rename on
+set-option -g automatic-rename-format '#{b:pane_current_path}'
+
+# disalbe window rename
+#set-option -g allow-rename off
 
 ######################
 #### Key Bindings ####
