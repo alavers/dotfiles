@@ -1,0 +1,4 @@
+--type-set=md:ext:md
+--ignore-dir=dist
+--ignore-dir=coverage
+--ignore-dir=.nyc_output

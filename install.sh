@@ -24,6 +24,9 @@ if [ "$(uname)" == "Darwin" ]; then
 
     echo "Installing misc"
     source install/misc.sh
+
+    echo "Installing ruby stuff"
+    source install/ruby.sh
     
     # echo "Configuring nginx"
     # create a backup of the original nginx.conf

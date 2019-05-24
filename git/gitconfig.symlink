@@ -68,7 +68,7 @@
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [heroku]
 [init]
-    templatedir = /Users/andrew/.git-templates
+    templatedir = /Users/alavers/.git-templates
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
