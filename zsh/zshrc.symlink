@@ -14,6 +14,7 @@ antigen bundle jonmosco/kube-ps1
 antigen bundle git
 antigen bundle docker
 antigen bundle fasd
+antigen bundle kubectl 
 # antigen bundle tmuxinator
 #antigen bundle kubectl 
 #antigen bundle lein

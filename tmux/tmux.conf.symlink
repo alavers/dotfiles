@@ -1,3 +1,6 @@
+# use zsh
+set -g default-command /usr/local/bin/zsh
+
 # tmux display things in 256 colors
 set -g default-terminal "screen-256color"
 
@@ -115,5 +118,5 @@ bind C-v run "tmux set-buffer $(pbpaste); tmux paste-buffer"
 ##############################
 #### Color & Style Settings ###
 ###############################
-source ~/.dotfiles/tmux/theme.sh
+source ~/.dotfiles/tmux/tmux-gruvbox-dark.conf
 
