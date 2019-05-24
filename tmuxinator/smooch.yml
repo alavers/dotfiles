@@ -37,22 +37,27 @@ windows:
       root: ~/git/agent-console
       layout: main-vertical
       panes:
-        - vim .
+        - vim
   - server:
       root: ~/git/agent-console
-      layout: main-vertical
+      layout: even-vertical
       panes:
-        - npm run dev
-        - npm run webpack
+        - npm run ts:watch
+        - npm run app:watch
+        - npm run worker:watch
+        - npm run worker:webhook:watch
   - web:
-      root: ~/git/smooch-js
+      root: ~/git/smooch-web-private
       layout: main-vertical
       panes:
+        - #empty 
         - npm run dev
-  - ngrok: ngrok http -subdomain=al 8091
-  - docker: 
-      root: ~/git/smooch-rabbitmq-docker
+        - cd ~/git/agent-console && npm run webpack
+  - docs:
+      root: ~/git/smooch-docs
       layout: main-vertical
-      panes: 
-        - docker-compose up
-
+  - misc:
+      layout: main-horizontal
+      panes:
+        - ngrok start --all
+        - cd ~/git/agent-console && npm run containers

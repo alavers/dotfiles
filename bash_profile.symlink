@@ -273,7 +273,7 @@ alias .5='cd ../../../../..'
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-export NVM_DIR="/Users/andrew/.nvm"
+export NVM_DIR="/Users/alavers/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Set PATH in launchctl so apps have it as well
