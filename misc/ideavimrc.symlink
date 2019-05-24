@@ -1,0 +1,12 @@
+set clipboard+=unnamed
+
+let mapleader = ','
+let maplocalleader = ','
+let g:mapleader = ','
+
+"save
+nmap <leader>, :w<cr>
+
+"quickly edit/reload the vimrc file
+nmap <silent> <leader>cv :e ~/.ideavimrc<cr>
+nmap <silent> <leader>sv :so ~/.ideavimrc<cr>
