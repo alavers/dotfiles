@@ -13,6 +13,8 @@ antigen bundle jonmosco/kube-ps1
 #antigen bundle pyenv
 antigen bundle git
 antigen bundle docker
+antigen bundle fasd
+# antigen bundle tmuxinator
 #antigen bundle kubectl 
 #antigen bundle lein
 #antigen bundle command-not-found
@@ -54,7 +56,7 @@ export EDITOR=nvim
 export NODE_REPL_MODE=strict
 export NODE_REPL_HISTORY_FILE=$HOME/.node_repl_history
 export XDG_CONFIG_HOME=$HOME/.config
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 # Make nvim pyenv stop complaning
 export PYENV_ROOT=$HOME/.pyenv
@@ -63,7 +65,7 @@ export PYENV_ROOT=$HOME/.pyenv
 export role=web
 
 # tmuxinator
-source ~/.bin/tmuxinator.zsh
+# source ~/.bin/tmuxinator.zsh
 
 alias vim='nvim'
 alias vimdiff='nvim -d'
@@ -80,6 +82,7 @@ alias ctags="`brew --prefix`/bin/ctags"
 alias agall='ag'
 alias ag='agall --path-to-ignore ~/.ignore'
 
+# Initialize fasd. This is needed for z to work
 eval "$(fasd --init auto)"
 
 # Firefox
@@ -98,6 +101,7 @@ alias kdp="kubectl describe pod"
 alias kl="kubectl logs -f"
 
 alias restore-cursor="tput cnorm"
+# alias z="fasd"
 
 function pi { psc $* --profile smooch-internal }
 function pp { psc $* --profile smooch-prod }
@@ -211,11 +215,10 @@ export FZF_DEFAULT_OPTS="--extended"
 export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
 
 # node package dependencies update assist
-source /Users/andrew/git/dep-assist/alias-dep-assist.sh
+# source /Users/andrew/git/dep-assist/alias-dep-assist.sh
 
 #zshrc profiling
 #zprof
-
 
 # Change prompt caret to skull when in prod context
 caret() {

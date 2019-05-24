@@ -34,6 +34,7 @@ brew install go
 brew install jid
 brew install python
 brew install python3
+brew install fasd
 
 # databases
 brew install redis
