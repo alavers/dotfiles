@@ -15,7 +15,7 @@ antigen bundle git
 antigen bundle docker
 antigen bundle fasd
 antigen bundle kubectl 
-# antigen bundle tmuxinator
+#antigen bundle tmuxinator
 #antigen bundle kubectl 
 #antigen bundle lein
 #antigen bundle command-not-found
@@ -93,21 +93,20 @@ alias ff="/Applications/Firefox.app/Contents/macOS/firefox --profile /Users/andr
 # Kubectl
 alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
 alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
-alias k="kubectl"
-alias kcc="kubectl config current-context"
-alias kc="kubectl config use-context"
-alias kgp="kubectl get pods"
-alias kgd="kubectl get deploy"
-alias kdp="kubectl describe pod"
-alias kl="kubectl logs -f"
 
 alias restore-cursor="tput cnorm"
 # alias z="fasd"
+#
+alias quiet="osascript -e \"set Volume 0.1\""
+alias quieter="osascript -e \"set Volume 0.01\""
 
 function pi { psc $* --profile smooch-internal }
 function pp { psc $* --profile smooch-prod }
 function peu { psc $* --profile smooch-eu }
 function pz { psc $* --profile zdlt }
+
+# Kubectl auto completion
+if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 
 # VSCode
 code() {
