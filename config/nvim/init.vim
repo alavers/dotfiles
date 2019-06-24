@@ -231,7 +231,7 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 "}}}
 
 "ctrlpvim/ctrlp.vim {{{
-    let g:ctrlp_custom_ignore = 'node_modules\|dist\|build\|coverage\'
+    let g:ctrlp_custom_ignore = 'node_modules\|dist\|coverage\'
 "}}}
 
 "geekjuice/vim-mocha {{{
