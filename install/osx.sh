@@ -179,6 +179,9 @@ defaults write com.apple.Safari ProxiesInBookmarksBar "()"
 echo "Only use UTF-8 in Terminal.app"
 defaults write com.apple.terminal StringEncodings -array 4
 
+echo "Turn off the fucking chime when pluggin in"
+defaults write com.apple.PowerChime ChimeOnNoHardware -bool true
+
 # echo "Disable the Ping sidebar in iTunes"
 # defaults write com.apple.iTunes disablePingSidebar -bool true
 
@@ -202,6 +205,7 @@ defaults write com.apple.terminal StringEncodings -array 4
 
 # echo "Enable Dashboard dev mode (allows keeping widgets on the desktop)"
 # defaults write com.apple.dashboard devmode -bool true
+
 
 #echo "Reset Launchpad"
 #[ -e ~/Library/Application\ Support/Dock/*.db ] && rm ~/Library/Application\ Support/Dock/*.db
