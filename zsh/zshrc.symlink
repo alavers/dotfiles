@@ -10,6 +10,7 @@ antigen use oh-my-zsh
 #export NVM_NO_USE=true
 antigen bundle lukechilds/zsh-nvm
 antigen bundle jonmosco/kube-ps1
+antigen bundle zsh-users/zsh-autosuggestions
 #antigen bundle pyenv
 antigen bundle git
 antigen bundle docker
@@ -47,6 +48,7 @@ export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH=~/Library/Python/3.7/bin:$PATH
 PATH="/Users/andrew/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/Users/andrew/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/Users/andrew/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
@@ -104,9 +106,6 @@ function pi { psc $* --profile smooch-internal }
 function pp { psc $* --profile smooch-prod }
 function peu { psc $* --profile smooch-eu }
 function pz { psc $* --profile zdlt }
-
-# Kubectl auto completion
-if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 
 # VSCode
 code() {
@@ -233,3 +232,7 @@ KUBE_PS1_SUFFIX=''
 PROMPT='
 $(_user_host)${_current_dir} $(kube_ps1) $(git_prompt_info) 
 %{$fg[$CARETCOLOR]%}$(caret)%{$resetcolor%} '
+
+# Kubectl auto completion
+# This does not work when run via zshrc for some reason
+source <(kubectl completion zsh)

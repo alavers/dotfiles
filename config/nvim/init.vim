@@ -3,7 +3,8 @@
     set autoread
     set bs=2 	            "backspace behavior
     set clipboard=unnamed   "Merge vim and OSX clipboards
-    set completeopt=longest,menuone
+    "set completeopt=longest,menuone
+	set completeopt=noinsert,menuone,noselect "ncm2 wants this one instead?
     set copyindent          "copy the previous indentation on autoindenting
     set encoding=UTF8       "vim-devicons needs this
     set expandtab           "insert spaces instead of tabs
@@ -25,6 +26,7 @@
     set relativenumber      "show relative line numbers
     set shiftround          "round indent to a multiple of 'shiftwidth'
     set shiftwidth=4        "number of spaces to use for indent and unindent
+	set shortmess+=c        "suppress annoying pattern not found messages
     set showtabline=2       "show tab line at the top
     set smarttab 	        "tab respects tabstop shiftwidth and softtabstop
     set so=4                "Scroll ahead of the cursor
@@ -32,6 +34,8 @@
     set tabstop=4 	        "visible width of tabs
     set textwidth=120       "automaticlaly add newlines for text longer than 120 cols
     set title               "change the terminal's title
+    set undodir=~/.vim/undodir "undo directory
+    set undofile            "persistent undo
     set undolevels=1000     "use many muchos levels of undo
     set updatetime=750      "speed up gitgutter
     set visualbell          "don't beep
@@ -41,8 +45,8 @@
 "}}}
 
 "plugins {{{
-    let g:python_host_prog = '/Users/andrew/.pyenv/versions/neovim2/bin/python'
-    let g:python3_host_prog = '/Users/andrew/.pyenv/versions/neovim3/bin/python'
+    " let g:python_host_prog = '/Users/andrew/.pyenv/versions/neovim2/bin/python'
+    " let g:python3_host_prog = '/Users/andrew/.pyenv/versions/neovim3/bin/python'
 
     call plug#begin()
 
@@ -71,8 +75,9 @@
     Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
     Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
+    Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
+	Plug 'ncm2/ncm2-path'                   "path completion
     Plug 'othree/yajs.vim'                  "javascript syntax
-    Plug 'roxma/nvim-completion-manager'    "better than <C-X><C-O>
     Plug 'ryanoasis/vim-devicons'           "icons next to filenames
     Plug 'tell-k/vim-autopep8'              "python formatter
     Plug 'tpope/vim-dispatch'               "let ack run independently
@@ -81,6 +86,7 @@
     Plug 'tpope/vim-rhubarb'                "github integration
     Plug 'tpope/vim-surround'               "ysiw' to wrap in '
     Plug 'tpope/vim-unimpaired'             "mappings like ]q [q for :cnext :cpref
+    Plug 'roxma/nvim-yarp'                  "requirement of ncm2
     Plug 'scrooloose/nerdcommenter'         "jsdoc comment blocks
     Plug 'scrooloose/nerdtree', {
         \ 'on': ['NERDTreeToggle',
@@ -141,6 +147,14 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     noremap <leader>e :lopen 40<cr>
     noremap <leader>d :lopen 10<cr>
     noremap <leader>x :lclose<cr>
+
+    " delete and visual replace without replacing clipboard
+    vnoremap p "_dP
+    nnoremap <leader>d "_d
+    vnoremap <leader>d "_d
+
+    " leader to get the default vim delete and replace behavior
+    vnoremap <leader>p p
 
     "cusor behave with wrapped lines
     nnoremap j gj
@@ -330,6 +344,15 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:jsx_ext_required = 1
 "}}}
 
+"ncm2/ncm2 {{{
+ 	autocmd BufEnter * call ncm2#enable_for_buffer()
+ 	let g:ncm2#auto_popup = 0
+    " imap <C-j> <Plug>(ncm2_manual_trigger)
+
+    " items of priority 1 - 6 show up with just one char, >= 7 need 2 chars
+    let g:ncm2#complete_length=[[1,1],[7,2]] 
+"}}}
+
 "scrooloose/nerdcommenter {{{
     let g:NERDSpaceDelims = 1
 "}}}
@@ -390,7 +413,6 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     \   'typescript': ['tsserver', 'tslint'],
     \   'javascript': ['eslint'],
     \   'java': ['javac'],
-    \   'python': ['flake8'],
     \}
 "}}}
 
