@@ -11,7 +11,10 @@ echo "Installing homebrew packages..."
 brew install ack
 brew install tree
 brew install wget
+
+# git tools
 brew install git-secrets
+brew install --HEAD homebrew/head-only/gitstats
 
 # development server setup
 brew install nginx
