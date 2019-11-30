@@ -19,6 +19,7 @@
     set nobackup
     set nocompatible
     set noerrorbells        "don't beep
+	set nopaste				"disable INSERT (paste) mode
     set noswapfile
     set nowrap              "turn off line wrapping
     set nofixendofline      "disable line feed insertion at end of files
@@ -50,12 +51,13 @@
 
     call plug#begin()
 
+
     Plug 'airblade/vim-gitgutter'           "git status in the gutter
     Plug 'artemave/spec-index.vim'          "test outline
-    Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'bash install.sh',
-        \ }                                 "javascript intellisense
+    " Plug 'autozimu/LanguageClient-neovim', {
+        " \ 'branch': 'next',
+        " \ 'do': 'bash install.sh',
+        " \ }                                 "javascript intellisense
     Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
     Plug 'fatih/vim-go'                     "go vim tools
     Plug 'galooshi/vim-import-js'           "js import manager
@@ -69,6 +71,12 @@
     Plug 'leafgarland/typescript-vim'       "typescript syntax
     Plug 'majutsushi/tagbar'                "code outline sidebar
     Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
+
+    Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
+    Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+    Plug 'Shougo/denite.nvim'               "denite features for nvim-typescript
+    Plug 'Shougo/deoplete.nvim'             "async completion for nvim-typescript
+
     Plug 'mileszs/ack.vim'                  "fuzzy file content search
     Plug 'moll/vim-bbye'                    "close
     Plug 'morhetz/gruvbox'                  "colorscheme
@@ -78,6 +86,7 @@
     Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
 	Plug 'ncm2/ncm2-path'                   "path completion
     Plug 'othree/yajs.vim'                  "javascript syntax
+    Plug 'Quramy/tsuquyomi'                 "typescript goodness
     Plug 'ryanoasis/vim-devicons'           "icons next to filenames
     Plug 'tell-k/vim-autopep8'              "python formatter
     Plug 'tpope/vim-dispatch'               "let ack run independently
@@ -95,11 +104,11 @@
     Plug 'shinchu/lightline-gruvbox.vim'    "gruvbox theme for lightline
     Plug 'SirVer/ultisnips'                 "snippets
     Plug 'vim-scripts/BufOnly.vim'          "close all other buffers
-    Plug 'w0rp/ale'                         "linter
+    Plug 'w0rp/ale'                         "linter/auto formatter
     call plug#end()
 "}}}
 
-let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
 
 " functions {{{
     function! QuickfixToggle()
@@ -132,9 +141,10 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
     " save
     nmap <leader>, :w<cr>
+    inoremap <leader>, <Esc>:w<cr>
 
     "quickly edit/reload the vimrc file
-    nmap <silent> <leader>cv :e $MYVIMRC<cr>
+    nmap <silent> <leader>cv :tabe $MYVIMRC<cr>
     nmap <silent> <leader>sv :so $MYVIMRC<cr>
     nmap <silent> <leader>pi :so $MYVIMRC<cr>:PlugInstall<cr>
 
@@ -150,8 +160,8 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
     " delete and visual replace without replacing clipboard
     vnoremap p "_dP
-    nnoremap <leader>d "_d
-    vnoremap <leader>d "_d
+    " nnoremap <leader>d "_d
+    " vnoremap <leader>d "_d
 
     " leader to get the default vim delete and replace behavior
     vnoremap <leader>p p
@@ -162,18 +172,28 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     vnoremap j gj
     vnoremap k gk
 
-    " Cycle through buffers
-    :nnoremap <Tab> :bnext<CR>
-    :nnoremap <S-Tab> :bprevious<CR>
+    " Buffer navigation
+    nnoremap <Tab> :bnext<CR>
+    nnoremap <S-Tab> :bprevious<CR>
 
+    " Tab navigation
+    nnoremap “ :tabprevious<CR>
+    nnoremap ‘ :tabnext<CR>
+    nnoremap ¡ 1gt
+    nnoremap ™ 2gt
+    nnoremap £ 3gt
+    nnoremap ¢ 4gt
+    nnoremap ∞ 5gt
+    nnoremap § 6gt
+    nnoremap ¶ 7gt
+    nnoremap • 8gt
+    nnoremap ª 9gt
 
     "popup menu navigation
     inoremap <expr><TAB> pumvisible() ? "\<C-n>": "\<TAB>"
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>": "\<S-TAB>"
     "inoremap <expr><C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
     "inoremap <expr><C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
-
-    "inoremap jk <esc>
 
     "enter to clear search highlight
     nnoremap <CR> :noh<CR><CR>
@@ -214,6 +234,22 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     
     " Reload syntax
     noremap <leader>rs :syntax sync fromstart<cr>
+
+    " disable escape
+    inoremap <Esc> <Nop>
+
+    " exit insert mode
+    inoremap <C-L> <Esc>
+    inoremap <C-K> <Esc>
+    inoremap ;; <Esc>
+    vnoremap <C-L> <Esc>
+    vnoremap <C-K> <Esc>
+
+    " nnoremap <C-w><C-h> :vertical resize +5<cr>
+    " nnoremap <C-w><C-l> :vertical resize -5<cr>
+    
+    " Copy current path to clipboard
+    nmap <Leader>fr :let @*=expand("%")<CR>
 "}}}
 
 "autozimu/LanguageClient-neovim {{{
@@ -232,20 +268,24 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:LanguageClient_diagnosticsList = "location"
 
     
-    nnoremap <silent> K :call LanguageClient_contextMenu()<CR>
-    "nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> gt :call LanguageClient#textDocument_typeDefinition()<CR>
-    nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
-    nnoremap <silent> ga :call LanguageClient_textDocument_codeAction()<CR>
-    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+    " nnoremap <silent> K :call LanguageClient_contextMenu()<CR>
+    " nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    " nnoremap <silent> gt :call LanguageClient#textDocument_typeDefinition()<CR>
+    " nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
+    " nnoremap <silent> ga :call LanguageClient_textDocument_codeAction()<CR>
+    " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
     "<leader>lf to fuzzy find the symbols in the current document
-    autocmd FileType javascript nnoremap <buffer>
-                \ <leader>lf :call LanguageClient_textDocument_documentSymbol()<cr>
+    " autocmd FileType javascript nnoremap <buffer>
+                " \ <leader>lf :call LanguageClient_textDocument_documentSymbol()<cr>
 "}}}
 
 "ctrlpvim/ctrlp.vim {{{
     let g:ctrlp_custom_ignore = 'node_modules\|dist\|coverage\'
+    let g:ctrlp_prompt_mappings = {
+      \ 'AcceptSelection("e")': [],
+      \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
+      \ }
 "}}}
 
 "geekjuice/vim-mocha {{{
@@ -353,6 +393,17 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:ncm2#complete_length=[[1,1],[7,2]] 
 "}}}
 
+"mhartington/nvim-typescript {{{
+    " nnoremap <silent> gt :TSType<CR> " conflicts with tabs
+    nnoremap <silent> gd :TSDef<CR>
+    nnoremap <silent> gr :TSRefs<CR>
+    nnoremap <silent> ga :TSGetCodeFix<CR>
+    nnoremap <silent> gn :TSRename<CR>
+    nnoremap <silent> gc :TSEditConfig<CR>
+    nnoremap <silent> gi :TSOrganizeImports<CR>
+    nnoremap <silent> gx :TSGetDiagnostics<CR>
+"}}}
+
 "scrooloose/nerdcommenter {{{
     let g:NERDSpaceDelims = 1
 "}}}
@@ -377,11 +428,15 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:lightline.colorscheme = 'gruvbox'
 "}}}
 
+"Shougo/deoplete.nvim {{{
+    let g:deoplete#enable_at_startup = 1
+"}}}
+
 "SirVer/ultisnips {{{
     let g:UltiSnipsExpandTrigger="<C-j>"
-    let g:UltiSnipsListSnippets="<C-l>"
-    let g:UltiSnipsJumpForwardTrigger="<C-l>"
-    let g:UltiSnipsJumpBackwardTrigger="<C-h>"
+    " let g:UltiSnipsListSnippets="<C-l>"
+    " let g:UltiSnipsJumpForwardTrigger="<C-l>"
+    " let g:UltiSnipsJumpBackwardTrigger="<C-h>"
 "}}}
 
 "tell-k/vim-autopep8 {{{
@@ -393,7 +448,9 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:ale_fix_on_save = 0
     let g:ale_javascript_prettier_use_global = 1
     let g:ale_typescript_tslint_use_global = 1
+    " let g:ale_typescript_tsserver_use_global = 1
     let g:ale_echo_delay = 1000
+    " let g:ale_disable_lsp = 1
 
     " ale forces eslint to run against .ts files, but we don't want it to
     "let g:ale_javascript_eslint_options = '--ignore-pattern *.ts'
@@ -409,8 +466,10 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     \   'markdown': ['prettier']
     \}
 
+    "'typescript': ['tsserver', 'tslint'],
+    
     let g:ale_linters = {
-    \   'typescript': ['tsserver', 'tslint'],
+    \   'typescript': ['tslint'],
     \   'javascript': ['eslint'],
     \   'java': ['javac'],
     \}
@@ -466,6 +525,7 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
         " smooch settings
         let smooch = matchstr(getcwd(), 'git/agent-console')
         if !empty(smooch)
+            let g:ale_javascript_prettier_use_global = 0
             let g:NERDTreeIgnore = ['__pycache__$', 'node_modules$', 'dist$', 'build$', 'persist$', 'temp$', 'coverage$', '.nyc_output$']
             let g:ale_fix_on_save = 1
         endif
@@ -480,6 +540,15 @@ let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
         let smooch_locust = matchstr(getcwd(), 'git/loadtests/platform/locust')
         if !empty(smooch_locust)
             let g:NERDTreeIgnore = ['__pycache__$']
+        endif
+
+        " ioredis settings
+        let ioredis = matchstr(getcwd(), 'git/ioredis')
+        if !empty(ioredis)
+            let g:ale_javascript_prettier_use_global = 0
+            let g:ale_fix_on_save = 1
+            let g:ctrlp_custom_ignore = 'built'
+            let g:NERDTreeIgnore = ['node_modules', 'built']
         endif
 
         " let smooch_debuggler = matchstr(getcwd(), 'git/smooch-debuggler')
