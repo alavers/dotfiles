@@ -55,8 +55,6 @@ export PATH=/usr/local/Cellar/postgresql/9.3.4/bin:$PATH
 #
 # Settings
 #
-export OPENTOK_KEY=***REMOVED***
-export OPENTOK_SECRET=***REMOVED***
 #export METEOR_SETTINGS=$(cat ~/git/ringo/meteor/settings.json)
 export WORKON_HOME=~/Envs
 export PROJECT_HOME=~/Devel
