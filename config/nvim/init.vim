@@ -16,6 +16,7 @@
     set ignorecase          "ignore case when searching
     set incsearch           "show search matches as you type
     set mouse=a             "mouse in vim
+    set noautochdir         "dont change dir upon opening a file
     set nobackup
     set nocompatible
     set noerrorbells        "don't beep
@@ -250,6 +251,8 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     
     " Copy current path to clipboard
     nmap <Leader>fr :let @*=expand("%")<CR>
+
+    nmap <Leader>b :!npm run build<CR>
 "}}}
 
 "autozimu/LanguageClient-neovim {{{
@@ -441,11 +444,11 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
 
 "tell-k/vim-autopep8 {{{
     let g:autopep8_disable_show_diff=1
-    let g:autopep8_on_save = 1
+    let g:autopep8_on_save = 0
 "}}}
 
 "w0rp/ale {{{
-    let g:ale_fix_on_save = 0
+    let g:ale_fix_on_save = 1
     let g:ale_javascript_prettier_use_global = 1
     let g:ale_typescript_tslint_use_global = 1
     " let g:ale_typescript_tsserver_use_global = 1
@@ -546,9 +549,10 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
         let ioredis = matchstr(getcwd(), 'git/ioredis')
         if !empty(ioredis)
             let g:ale_javascript_prettier_use_global = 0
-            let g:ale_fix_on_save = 1
+            let g:ale_fix_on_save = 0
             let g:ctrlp_custom_ignore = 'built'
             let g:NERDTreeIgnore = ['node_modules', 'built']
+            set shiftwidth=2
         endif
 
         " let smooch_debuggler = matchstr(getcwd(), 'git/smooch-debuggler')
