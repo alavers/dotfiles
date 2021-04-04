@@ -65,16 +65,18 @@
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
     "Plug 'haron-prime/evening_vim'          "colorscheme with better diff
     Plug 'heavenshell/vim-jsdoc'            "jsdoc function comments
-    Plug 'itchyny/lightline.vim'            "pretty statusbar and tabbar
+    " Plug 'itchyny/lightline.vim'            "pretty statusbar and tabbar
     "Plug 'joshdick/onedark.vim'             "colorscheme
     Plug 'junegunn/fzf.vim'                 "fuzzy file search
     Plug 'kannokanno/previm'                "markdown preview
     Plug 'leafgarland/typescript-vim'       "typescript syntax
     Plug 'majutsushi/tagbar'                "code outline sidebar
-    Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
+    " Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
 
     Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
-    Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+
+    " A bug makes this plugin unusable: https://github.com/mhartington/nvim-typescript/issues/267
+    " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
     Plug 'Shougo/denite.nvim'               "denite features for nvim-typescript
     Plug 'Shougo/deoplete.nvim'             "async completion for nvim-typescript
 
@@ -102,14 +104,15 @@
         \ 'on': ['NERDTreeToggle',
         \        'NERDTreeFind']
         \ }                                 "file browser sidebar
-    Plug 'shinchu/lightline-gruvbox.vim'    "gruvbox theme for lightline
+    " Plug 'shinchu/lightline-gruvbox.vim'    "gruvbox theme for lightline
     Plug 'SirVer/ultisnips'                 "snippets
     Plug 'vim-scripts/BufOnly.vim'          "close all other buffers
-    Plug 'w0rp/ale'                         "linter/auto formatter
+    " Plug 'vim-airline/vim-airline'          "pretty status bar and tabbar
+    " Plug 'vim-airline/vim-airline-themes'
+    " Plug 'w0rp/ale'                         "linter/auto formatter
+    " Plug 'xavierchow/vim-swagger-preview'   "OpenAPI spec previewer
     call plug#end()
 "}}}
-
-let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
 
 " functions {{{
     function! QuickfixToggle()
@@ -120,6 +123,39 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
             cclose 10
         endif
     endfunction
+
+    "==============================================================================
+    " wipeout.vim - Destroy all buffers that are not open in any tabs or windows.
+    " https://www.vim.org/scripts/script.php?script_id=4882
+    "
+    " Adapted from the following StackOverflow answer:
+    " http://stackoverflow.com/questions/1534835
+    "
+    " Author: Artem Nezvigin <artem@artnez.com>
+    "==============================================================================
+    command! -bang Wipeout :call Wipeout(<bang>0)
+    function! Wipeout(bang)
+    " figure out which buffers are visible in any tab
+    let visible = {}
+    for t in range(1, tabpagenr('$'))
+        for b in tabpagebuflist(t)
+        let visible[b] = 1
+        endfor
+    endfor
+    " close any buffer that are loaded and not visible
+    let l:tally = 0
+    let l:cmd = 'bw'
+    if a:bang
+        let l:cmd .= '!'
+    endif
+    for b in range(1, bufnr('$'))
+        if buflisted(b) && !has_key(visible, b)
+        let l:tally += 1
+        exe l:cmd . ' ' . b
+        endif
+    endfor
+    echon "Deleted " . l:tally . " buffers"
+    endfun
 "}}}
 
 "mappings {{{
@@ -138,7 +174,8 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     noremap <leader>/ :call NERDComment(0,"toggle")<CR>
 
     "vim-scripts/BufOnly.vim
-    nmap <silent><leader>W :BufOnly<CR>
+    " nmap <silent><leader>W :%bd|e#<CR>
+    " nmap <silent><leader>W :%bd|e<CR>
 
     " save
     nmap <leader>, :w<cr>
@@ -149,12 +186,15 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     nmap <silent> <leader>sv :so $MYVIMRC<cr>
     nmap <silent> <leader>pi :so $MYVIMRC<cr>:PlugInstall<cr>
 
+    "vim swagger preview
+    " nmap <unique> <leader>sp <Plug>GenerateDiagram
+
     "toggle and grow quickfix
     noremap <leader>q :copen 40<cr>
     noremap <leader>a :copen 10<cr>
     noremap <leader>z :call QuickfixToggle()<cr>
 
-    "toggle and grow loclist 
+    "toggle and grow loclist
     noremap <leader>e :lopen 40<cr>
     noremap <leader>d :lopen 10<cr>
     noremap <leader>x :lclose<cr>
@@ -177,7 +217,11 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     nnoremap <Tab> :bnext<CR>
     nnoremap <S-Tab> :bprevious<CR>
 
-    " Tab navigation
+    " Tab navigation (iterm)
+    nnoremap <Alt+1> 1gt
+    nnoremap <Alt+2> 2gt
+
+    " Tab navigation (alacritty)
     nnoremap “ :tabprevious<CR>
     nnoremap ‘ :tabnext<CR>
     nnoremap ¡ 1gt
@@ -232,23 +276,25 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
 
     " Format JSON
     nmap <leader>jf :%!python -m json.tool<cr>
-    
+
     " Reload syntax
     noremap <leader>rs :syntax sync fromstart<cr>
 
+    " make Ctrl-C behave like Esc
+    inoremap <C-C> <Esc>
     " disable escape
     inoremap <Esc> <Nop>
 
     " exit insert mode
-    inoremap <C-L> <Esc>
-    inoremap <C-K> <Esc>
-    inoremap ;; <Esc>
-    vnoremap <C-L> <Esc>
-    vnoremap <C-K> <Esc>
+    inoremap <C-L> <Nop>
+    " inoremap <C-K> <Esc>
+    " inoremap ;; <Esc>
+    " vnoremap <C-L> <Esc>
+    " vnoremap <C-K> <Esc>
 
     " nnoremap <C-w><C-h> :vertical resize +5<cr>
     " nnoremap <C-w><C-l> :vertical resize -5<cr>
-    
+
     " Copy current path to clipboard
     nmap <Leader>fr :let @*=expand("%")<CR>
 
@@ -270,7 +316,7 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     "prevent interference with Ack
     let g:LanguageClient_diagnosticsList = "location"
 
-    
+
     " nnoremap <silent> K :call LanguageClient_contextMenu()<CR>
     " nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
     " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
@@ -285,10 +331,18 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
 
 "ctrlpvim/ctrlp.vim {{{
     let g:ctrlp_custom_ignore = 'node_modules\|dist\|coverage\'
-    let g:ctrlp_prompt_mappings = {
-      \ 'AcceptSelection("e")': [],
-      \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
-      \ }
+
+    " let g:ctrlp_prompt_mappings = {
+      " \ 'AcceptSelection("e")': [],
+      " \ 'AcceptSelection("r")': ['<cr>', '<c-m>'],
+      " \ }
+    "When opening a file, if it's already open in a window somewhere, CtrlP will try
+    "to jump to it instead of opening a new instance: >
+    let g:ctrlp_switch_buffer = 'Et'
+
+    "When opening a file with <cr>, CtrlP avoids opening it in windows created by
+    "plugins, help and quickfix. Use this to setup some exceptions: >
+    let g:ctrlp_reuse_window = 'netrw'
 "}}}
 
 "geekjuice/vim-mocha {{{
@@ -353,12 +407,55 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     augroup END
 "}}}
 
+"{{{ majutsushi/tagbar
+    let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
+    let g:tagbar_position = 'leftabove vertical'
+
+    " https://github.com/majutsushi/tagbar/wiki#typescript
+    
+    let g:tagbar_type_typescript = {
+    \ 'ctagsbin' : 'tstags',
+    \ 'ctagsargs' : '-f-',
+    \ 'kinds': [
+        \ 'e:enums:0:1',
+        \ 'f:function:0:1',
+        \ 't:typealias:0:1',
+        \ 'M:Module:0:1',
+        \ 'I:import:0:1',
+        \ 'i:interface:0:1',
+        \ 'C:class:0:1',
+        \ 'm:method:0:1',
+        \ 'p:property:0:1',
+        \ 'v:variable:0:1',
+        \ 'c:const:0:1',
+    \ ],
+    \ 'sort' : 0
+    \ }
+
+    " let g:tagbar_type_typescript = {
+    " \ 'ctagstype': 'typescript',
+    " \ 'kinds': [
+        " \ 'c:classes',
+        " \ 'n:modules',
+        " \ 'f:functions',
+        " \ 'v:variables',
+        " \ 'v:varlambdas',
+        " \ 'm:members',
+        " \ 'i:interfaces',
+        " \ 'e:enums',
+        " \ 't:tests',
+    " \ ]
+    " \ }
+
+    nmap <silent> <leader>r :TagbarToggle<cr>
+"}}}
+
 "mileszs/ack.vim {{{
     let g:ackprg = 'ack --sort-files'
     "if executable('ag')
         "let g:ackprg = 'ag --vimgrep'
     "endif
-    
+
     " Alias Ack! to F
     :command! -nargs=* F Ack! <args>
 "}}}
@@ -393,7 +490,7 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     " imap <C-j> <Plug>(ncm2_manual_trigger)
 
     " items of priority 1 - 6 show up with just one char, >= 7 need 2 chars
-    let g:ncm2#complete_length=[[1,1],[7,2]] 
+    let g:ncm2#complete_length=[[1,1],[7,2]]
 "}}}
 
 "mhartington/nvim-typescript {{{
@@ -447,9 +544,13 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     let g:autopep8_on_save = 0
 "}}}
 
+""vim-airline/vim-airline {{{
+    let g:airline#extensions#tabline#enabled = 1
+"}}}
+
 "w0rp/ale {{{
     let g:ale_fix_on_save = 1
-    let g:ale_javascript_prettier_use_global = 1
+    let g:ale_javascript_prettier_use_global = 0
     let g:ale_typescript_tslint_use_global = 1
     " let g:ale_typescript_tsserver_use_global = 1
     let g:ale_echo_delay = 1000
@@ -470,7 +571,7 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     \}
 
     "'typescript': ['tsserver', 'tslint'],
-    
+
     let g:ale_linters = {
     \   'typescript': ['tslint'],
     \   'javascript': ['eslint'],
@@ -555,6 +656,13 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
             set shiftwidth=2
         endif
 
+        " DefinitelyTyped settings
+        let definitely_typed = matchstr(getcwd(), 'git/DefinitelyTyped')
+        if !empty(definitely_typed)
+            let g:ale_fix_on_save = 0
+        endif
+
+
         " let smooch_debuggler = matchstr(getcwd(), 'git/smooch-debuggler')
         " if !empty(smooch_debuggler)
         "     let g:ctrlp_custom_ignore = 'lib\|dist\|amd'
@@ -594,5 +702,5 @@ let g:etagbar_ctags_bin = '/usr/local/bin/ctags'
     "hi SpellBad ctermbg=052 guibg=5f0000
     "hi SpellCap ctermbg=236 guibg=303030
     "hi Search cterm=NONE ctermfg=NONE ctermbg=058
-    
+
 "}}}

@@ -42,7 +42,7 @@ window:
   decorations: full
 
 # Display tabs using this many cells (changes require restart)
-tabspaces: 5
+# tabspaces: 5
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: true
@@ -272,6 +272,7 @@ key_bindings:
   - { key: C,        mods: Command, action: Copy                         }
   - { key: Q,        mods: Command, action: Quit                         }
   - { key: W,        mods: Command, action: Quit                         }
+  - { key: N,        mods: Command, action: SpawnNewInstance             }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }

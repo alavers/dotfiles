@@ -1,8 +1,8 @@
 #gitconfig
 [user]
-    email = andrew@smooch.io
+	email = alavers@zendesk.com
     name = "Andrew Lavers"
-	signingkey = 9BAEE0AD08EE0912
+	signingKey = 17E32FF52AB93BFD
 [github]
     user = alavers
 [core]

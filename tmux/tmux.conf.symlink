@@ -82,10 +82,10 @@ bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
 # Resize pane shortcuts
-bind -r H resize-pane -L 10
-bind -r J resize-pane -D 10
-bind -r K resize-pane -U 10
-bind -r L resize-pane -R 10
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
 
 # quickly switch panes
 # i backward
@@ -114,6 +114,13 @@ unbind -Tcopy-mode-vi MouseDragEnd1Pane
 
 # Buffers to/from Mac clipboard, yay tmux book from pragprog
 bind C-v run "tmux set-buffer $(pbpaste); tmux paste-buffer"
+
+# Renumber windows 
+bind R                                      \
+    set -g renumber-windows on\;            \
+    new-window\; kill-window\;              \
+    set -g renumber-windows off\;           \
+    display-message "Windows reordered..."
 
 ##############################
 #### Color & Style Settings ###

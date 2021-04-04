@@ -27,11 +27,6 @@ antigen bundle kubectl
 # Load the theme.
 antigen theme avit
 
-# Custom prompt
-PROMPT='
-$(_user_host)${_current_dir} $(git_prompt_info) $(_ruby_version)
-%{$fg[$CARETCOLOR]%}$%{$resetcolor%} '
-
 # Tell Antigen that you're done.
 antigen apply
 
@@ -41,6 +36,7 @@ if [ -e ~/.vars ];then
 fi
 
 # Path vars
+export SHELL=$(which zsh)
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/usr/local/rabbitmq_server-3.6.6/sbin:$PATH"
@@ -102,10 +98,11 @@ alias restore-cursor="tput cnorm"
 alias quiet="osascript -e \"set Volume 0.1\""
 alias quieter="osascript -e \"set Volume 0.01\""
 
-function pi { psc $* --profile smooch-internal }
-function pp { psc $* --profile smooch-prod }
-function peu { psc $* --profile smooch-eu }
-function pz { psc $* --profile zdlt }
+alias dps="docker ps --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\""
+alias dpsa="docker ps -a --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\""
+function pi { psc $* --profile smooch-internal --region us-east-1}
+function pp { psc $* --profile smooch-prod --region us-east-1}
+function peu { psc $* --profile smooch-prod --region eu-west-1}
 
 # VSCode
 code() {
