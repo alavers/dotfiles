@@ -44,6 +44,11 @@
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules "CtrlP
     set wildmenu            "enhanced command line completion
     set wildmode=list:longest " complete files like a shell
+
+    let g:netrw_liststyle = 3
+    let g:netrw_banner = 0
+    let g:netrw_winsize = 25
+    let g:netrw_browse_split = 4
 "}}}
 
 "plugins {{{
@@ -86,10 +91,16 @@
     Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
     Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
-    Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
-	Plug 'ncm2/ncm2-path'                   "path completion
+
+    " Thing is inserting <Plug> when I type?
+    " Plug 'ncm1/ncm2'                        "better than <C-X><C-O>
+	" Plug 'ncm2/ncm2-path'                   "path completion
+    
     Plug 'othree/yajs.vim'                  "javascript syntax
+
+    " Replaces nvim-typescript's bugginess
     Plug 'Quramy/tsuquyomi'                 "typescript goodness
+
     Plug 'ryanoasis/vim-devicons'           "icons next to filenames
     Plug 'tell-k/vim-autopep8'              "python formatter
     Plug 'tpope/vim-dispatch'               "let ack run independently
@@ -109,7 +120,7 @@
     Plug 'vim-scripts/BufOnly.vim'          "close all other buffers
     " Plug 'vim-airline/vim-airline'          "pretty status bar and tabbar
     " Plug 'vim-airline/vim-airline-themes'
-    " Plug 'w0rp/ale'                         "linter/auto formatter
+    Plug 'w0rp/ale'                         "linter/auto formatter
     " Plug 'xavierchow/vim-swagger-preview'   "OpenAPI spec previewer
     call plug#end()
 "}}}
@@ -485,12 +496,12 @@
 "}}}
 
 "ncm2/ncm2 {{{
- 	autocmd BufEnter * call ncm2#enable_for_buffer()
- 	let g:ncm2#auto_popup = 0
-    " imap <C-j> <Plug>(ncm2_manual_trigger)
+     " autocmd BufEnter * call ncm2#enable_for_buffer()
+     " let g:ncm2#auto_popup = 0
+    " " imap <C-j> <Plug>(ncm2_manual_trigger)
 
-    " items of priority 1 - 6 show up with just one char, >= 7 need 2 chars
-    let g:ncm2#complete_length=[[1,1],[7,2]]
+    " " items of priority 1 - 6 show up with just one char, >= 7 need 2 chars
+    " let g:ncm2#complete_length=[[1,1],[7,2]]
 "}}}
 
 "mhartington/nvim-typescript {{{
@@ -550,6 +561,8 @@
 
 "w0rp/ale {{{
     let g:ale_fix_on_save = 1
+    " let g:ale_fix_on_save_ignore = ['markdown']
+    let b:ale_fix_on_save_ignore = {'markdown': ['markdown']}
     let g:ale_javascript_prettier_use_global = 0
     let g:ale_typescript_tslint_use_global = 1
     " let g:ale_typescript_tsserver_use_global = 1

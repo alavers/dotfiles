@@ -1,3 +1,5 @@
+echo $AWS_ACCESS_KEY_ID
+
 #zshrc profiling
 #zmodload zsh/zprof
 
@@ -163,6 +165,9 @@ function keys() {
     ssh-add -K ~/.ssh/andrew@smooch.io
 }
 
+alias saml="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SMOOCH_INTERNAL_ARN --profile smooch-internal"
+alias samlp="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SMOOCH_PROD_ARN --profile smooch-prod"
+
 # https://gist.github.com/QinMing/364774610afc0e06cc223b467abe83c0
 lazy_load() {
     # Act as a stub to another shell function/command. When first run, it will load the actual function/command then execute it.
@@ -221,15 +226,38 @@ caret() {
     [[ $KUBE_PS1_CONTEXT =~ "prod" ]] && echo "%{$fg[red]%}HOPE YOU KNOW WHAT THE FUCK YOU'RE DOING\n☠️" || echo "$"
 }
 
+k8s_namespace() {
+    echo "%{$fg[yellow]%}$KUBECTL_NAMESPACE%{$resetcolor%}"
+}
+
 # avid theme PROMPT override for KUBE_PS1
 KUBE_PS1_SEPARATOR=''
 KUBE_PS1_NS_ENABLE=''
 KUBE_PS1_PREFIX=''
 KUBE_PS1_SUFFIX=''
 PROMPT='
-$(_user_host)${_current_dir} $(kube_ps1) $(git_prompt_info) 
+$(_user_host)${_current_dir} $(kube_ps1) $(k8s_namespace) $(git_prompt_info) 
 %{$fg[$CARETCOLOR]%}$(caret)%{$resetcolor%} '
+
+# Google cloud SDK
+source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 # Kubectl auto completion
 # This does not work when run via zshrc for some reason
 source <(kubectl completion zsh)
+alias kc='source <(kubectl completion zsh)'
+alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
+
+function kns { export KUBECTL_NAMESPACE=$* }
+
+export ZENDESK_HOST=zd-dev.com
+
+
+# export DOCKER_HOST=tcp://192.168.42.45:2375
+export DOCKER_HOST=
+export AWS_ENABLED=false
+
+# BEGIN ZDI
+source /Users/alavers/git/zendesk/zdi/dockmaster/zdi.sh
+# END ZDI
