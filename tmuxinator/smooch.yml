@@ -46,16 +46,7 @@ windows:
         - npm run app:watch
         - npm run worker:watch
         - npm run worker:webhook:watch
-  - web:
-      root: ~/git/smooch-web-private
-      layout: main-vertical
-      panes:
-        - #empty 
-        - npm run dev
-        - cd ~/git/agent-console && npm run webpack
-  - docs:
-      root: ~/git/smooch-docs
-      layout: main-vertical
+        - npm run webpack
   - misc:
       layout: main-horizontal
       panes:

@@ -259,5 +259,5 @@ export DOCKER_HOST=
 export AWS_ENABLED=false
 
 # BEGIN ZDI
-source /Users/alavers/git/zendesk/zdi/dockmaster/zdi.sh
+# source /Users/alavers/git/zendesk/zdi/dockmaster/zdi.sh
 # END ZDI

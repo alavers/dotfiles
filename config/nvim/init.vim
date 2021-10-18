@@ -78,12 +78,12 @@
     Plug 'majutsushi/tagbar'                "code outline sidebar
     " Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
 
-    Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
+    " Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
 
     " A bug makes this plugin unusable: https://github.com/mhartington/nvim-typescript/issues/267
     " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-    Plug 'Shougo/denite.nvim'               "denite features for nvim-typescript
-    Plug 'Shougo/deoplete.nvim'             "async completion for nvim-typescript
+    " Plug 'Shougo/denite.nvim'               "denite features for nvim-typescript
+    " Plug 'Shougo/deoplete.nvim'             "async completion for nvim-typescript
 
     Plug 'mileszs/ack.vim'                  "fuzzy file content search
     Plug 'moll/vim-bbye'                    "close
@@ -92,14 +92,19 @@
     Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
 
-    " Thing is inserting <Plug> when I type?
-    " Plug 'ncm1/ncm2'                        "better than <C-X><C-O>
+    " Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
 	" Plug 'ncm2/ncm2-path'                   "path completion
     
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+
     Plug 'othree/yajs.vim'                  "javascript syntax
 
     " Replaces nvim-typescript's bugginess
-    Plug 'Quramy/tsuquyomi'                 "typescript goodness
+    " Plug 'Quramy/tsuquyomi'                 "typescript goodness
 
     Plug 'ryanoasis/vim-devicons'           "icons next to filenames
     Plug 'tell-k/vim-autopep8'              "python formatter
@@ -313,19 +318,19 @@
 "}}}
 
 "autozimu/LanguageClient-neovim {{{
-    let g:LanguageClient_autoStart = 1
-    let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'dockerfile': ['docker-langserver --stdio'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'typescript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
-    \ 'python': ['pyls'],
-    \ 'go': ['go-langserver'],
-    \ }
+    " let g:LanguageClient_autoStart = 1
+    " let g:LanguageClient_serverCommands = {
+    " \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    " \ 'dockerfile': ['docker-langserver --stdio'],
+    " \ 'javascript': ['javascript-typescript-stdio'],
+    " \ 'typescript': ['javascript-typescript-stdio'],
+    " \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    " \ 'python': ['pyls'],
+    " \ 'go': ['go-langserver'],
+    " \ }
 
     "prevent interference with Ack
-    let g:LanguageClient_diagnosticsList = "location"
+    " let g:LanguageClient_diagnosticsList = "location"
 
 
     " nnoremap <silent> K :call LanguageClient_contextMenu()<CR>
@@ -504,15 +509,31 @@
     " let g:ncm2#complete_length=[[1,1],[7,2]]
 "}}}
 
+"neoclide/coc.nvim {{{
+    nnoremap <silent>gd :call CocActionAsync('jumpDefinition')<CR>
+    nnoremap <silent>gr :call CocActionAsync('jumpReferences')<CR>
+    nnoremap <silent>gn :call CocActionAsync('rename')<CR>
+    nnoremap <silent>gc :call CocActionAsync('refactor')<CR>
+    nnoremap <silent>gim :call CocActionAsync('runCommand', 'tsserver.organizeImports')<CR>
+    nnoremap <silent>gi :call CocActionAsync('doHover')<CR>
+    nnoremap <silent>gid :call CocActionAsync('definitionHover')<CR>
+    nnoremap <silent>ga :call CocActionAsync('diagnosticToggleBuffer')<CR>
+    nnoremap <silent>go :call CocActionAsync('showOutline')<CR>
+    nnoremap <silent>gp :call CocActionAsync('hideOutline')<CR>
+    " nnoremap <silent>gd :call CocAction('jumpDeclaration')<CR>
+    " nnoremap <silent>gd :call CocAction('jumpImplementation')<CR>
+    " nnoremap <silent>gd :call CocAction('jumpTypeDefinition')<CR>
+"}}}
+
 "mhartington/nvim-typescript {{{
     " nnoremap <silent> gt :TSType<CR> " conflicts with tabs
-    nnoremap <silent> gd :TSDef<CR>
-    nnoremap <silent> gr :TSRefs<CR>
-    nnoremap <silent> ga :TSGetCodeFix<CR>
-    nnoremap <silent> gn :TSRename<CR>
-    nnoremap <silent> gc :TSEditConfig<CR>
-    nnoremap <silent> gi :TSOrganizeImports<CR>
-    nnoremap <silent> gx :TSGetDiagnostics<CR>
+    " nnoremap <silent> gd :TSDef<CR>
+    " nnoremap <silent> gr :TSRefs<CR>
+    " nnoremap <silent> ga :TSGetCodeFix<CR>
+    " nnoremap <silent> gn :TSRename<CR>
+    " nnoremap <silent> gc :TSEditConfig<CR>
+    " nnoremap <silent> gi :TSOrganizeImports<CR>
+    " nnoremap <silent> gx :TSGetDiagnostics<CR>
 "}}}
 
 "scrooloose/nerdcommenter {{{
@@ -540,7 +561,7 @@
 "}}}
 
 "Shougo/deoplete.nvim {{{
-    let g:deoplete#enable_at_startup = 1
+    " let g:deoplete#enable_at_startup = 1
 "}}}
 
 "SirVer/ultisnips {{{
@@ -561,6 +582,10 @@
 
 "w0rp/ale {{{
     let g:ale_fix_on_save = 1
+    " A more convenient toggle
+    command! ALEDisableFix let g:ale_fix_on_save=0
+    command! ALEEnableFix let g:ale_fix_on_save=1
+
     " let g:ale_fix_on_save_ignore = ['markdown']
     let b:ale_fix_on_save_ignore = {'markdown': ['markdown']}
     let g:ale_javascript_prettier_use_global = 0
@@ -717,3 +742,4 @@
     "hi Search cterm=NONE ctermfg=NONE ctermbg=058
 
 "}}}
+
