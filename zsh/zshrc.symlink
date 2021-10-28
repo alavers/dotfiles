@@ -260,4 +260,5 @@ export AWS_ENABLED=false
 
 # BEGIN ZDI
 # source /Users/alavers/git/zendesk/zdi/dockmaster/zdi.sh
+alias zdi:source="source ~/git/zendesk/zdi/dockmaster/zdi.sh"
 # END ZDI

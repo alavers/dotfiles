@@ -6,7 +6,7 @@
     "set completeopt=longest,menuone
 	set completeopt=noinsert,menuone,noselect "ncm2 wants this one instead?
     set copyindent          "copy the previous indentation on autoindenting
-    set encoding=UTF8       "vim-devicons needs this
+    set encoding=UTF-8      "nvim-web-devicons needs this
     set expandtab           "insert spaces instead of tabs
     set foldenable
     set foldmethod=marker   "fold markers (triple brakcets)
@@ -35,6 +35,7 @@
     set softtabstop=4       "edit as if the tabs are 4 characters wide
     set tabstop=4 	        "visible width of tabs
     set textwidth=120       "automaticlaly add newlines for text longer than 120 cols
+    set termguicolors       "added for barbar
     set title               "change the terminal's title
     set undodir=~/.vim/undodir "undo directory
     set undofile            "persistent undo
@@ -70,43 +71,36 @@
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
     "Plug 'haron-prime/evening_vim'          "colorscheme with better diff
     Plug 'heavenshell/vim-jsdoc'            "jsdoc function comments
-    " Plug 'itchyny/lightline.vim'            "pretty statusbar and tabbar
     "Plug 'joshdick/onedark.vim'             "colorscheme
     Plug 'junegunn/fzf.vim'                 "fuzzy file search
     Plug 'kannokanno/previm'                "markdown preview
+    Plug 'kyazdani42/nvim-web-devicons'     "icons next to filenames
     Plug 'leafgarland/typescript-vim'       "typescript syntax
     Plug 'majutsushi/tagbar'                "code outline sidebar
-    " Plug 'mgee/lightline-bufferline'        "tabline buffers for lightline
-
     " Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
-
     " A bug makes this plugin unusable: https://github.com/mhartington/nvim-typescript/issues/267
     " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
     " Plug 'Shougo/denite.nvim'               "denite features for nvim-typescript
     " Plug 'Shougo/deoplete.nvim'             "async completion for nvim-typescript
-
     Plug 'mileszs/ack.vim'                  "fuzzy file content search
     Plug 'moll/vim-bbye'                    "close
     Plug 'morhetz/gruvbox'                  "colorscheme
     Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
     Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
-
     " Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
 	" Plug 'ncm2/ncm2-path'                   "path completion
-    
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-
     Plug 'othree/yajs.vim'                  "javascript syntax
 
     " Replaces nvim-typescript's bugginess
     " Plug 'Quramy/tsuquyomi'                 "typescript goodness
-
     Plug 'ryanoasis/vim-devicons'           "icons next to filenames
+    Plug 'romgrk/barbar.nvim'               "tab bar
     Plug 'tell-k/vim-autopep8'              "python formatter
     Plug 'tpope/vim-dispatch'               "let ack run independently
     Plug 'tpope/vim-fugitive'               "git inside vim
@@ -114,9 +108,10 @@
     Plug 'tpope/vim-rhubarb'                "github integration
     Plug 'tpope/vim-surround'               "ysiw' to wrap in '
     Plug 'tpope/vim-unimpaired'             "mappings like ]q [q for :cnext :cpref
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     Plug 'roxma/nvim-yarp'                  "requirement of ncm2
-    Plug 'scrooloose/nerdcommenter'         "jsdoc comment blocks
-    Plug 'scrooloose/nerdtree', {
+    Plug 'preservim/nerdcommenter'         "jsdoc comment blocks
+    Plug 'preservim/nerdtree', {
         \ 'on': ['NERDTreeToggle',
         \        'NERDTreeFind']
         \ }                                 "file browser sidebar
@@ -136,7 +131,7 @@
         copen 10
         let nr2 = winnr("$")
         if nr == nr2
-            cclose 10
+            cclose
         endif
     endfunction
 
@@ -183,11 +178,11 @@
     "artemave/spec-index.vim
     nnoremap <Leader>si :ShowSpecIndex<cr>
 
-    "moll/vim-bbye close buffer without closing window
-    nnoremap <leader>w :Bdelete<cr>
+    "moll/vim-bbye close buffer without closing window (done via barbar now)
+    " nnoremap <leader>w :Bdelete<cr>
 
     "scrooloose/nerdcommenter
-    noremap <leader>/ :call NERDComment(0,"toggle")<CR>
+    noremap <leader>/ :call nerdcommenter#Comment(0,"toggle")<CR>
 
     "vim-scripts/BufOnly.vim
     " nmap <silent><leader>W :%bd|e#<CR>
@@ -229,26 +224,13 @@
     vnoremap j gj
     vnoremap k gk
 
-    " Buffer navigation
-    nnoremap <Tab> :bnext<CR>
-    nnoremap <S-Tab> :bprevious<CR>
-
-    " Tab navigation (iterm)
-    nnoremap <Alt+1> 1gt
-    nnoremap <Alt+2> 2gt
+    " Buffer navigation (done via barbar now)
+    " nnoremap <Tab> :bnext<CR>
+    " nnoremap <S-Tab> :bprevious<CR>
 
     " Tab navigation (alacritty)
     nnoremap “ :tabprevious<CR>
     nnoremap ‘ :tabnext<CR>
-    nnoremap ¡ 1gt
-    nnoremap ™ 2gt
-    nnoremap £ 3gt
-    nnoremap ¢ 4gt
-    nnoremap ∞ 5gt
-    nnoremap § 6gt
-    nnoremap ¶ 7gt
-    nnoremap • 8gt
-    nnoremap ª 9gt
 
     "popup menu navigation
     inoremap <expr><TAB> pumvisible() ? "\<C-n>": "\<TAB>"
@@ -536,11 +518,30 @@
     " nnoremap <silent> gx :TSGetDiagnostics<CR>
 "}}}
 
-"scrooloose/nerdcommenter {{{
+"{{{ romgrk/barbar.nvim
+nnoremap <silent> <Tab> :BufferNext<CR>
+nnoremap <silent> <S-Tab> :BufferPrevious<CR>
+nnoremap <silent> ≤ :BufferMovePrevious<CR>
+nnoremap <silent> ≥ :BufferMoveNext<CR>
+nnoremap <silent> ¡ :BufferGoto 1<CR>
+nnoremap <silent> ™ :BufferGoto 2<CR>
+nnoremap <silent> £ :BufferGoto 3<CR>
+nnoremap <silent> ¢ :BufferGoto 4<CR>
+nnoremap <silent> ∞ :BufferGoto 5<CR>
+nnoremap <silent> § :BufferGoto 6<CR>
+nnoremap <silent> ¶ :BufferGoto 7<CR>
+nnoremap <silent> • :BufferGoto 8<CR>
+nnoremap <silent> ª :BufferGoto 9<CR>
+nnoremap <silent> π :BufferPin<CR>
+nnoremap <silent> <leader>w :BufferClose<cr>
+" nnoremap <silent> <C-s> :BufferPick<CR>
+"}}}
+
+"preservim/nerdcommenter {{{
     let g:NERDSpaceDelims = 1
 "}}}
 
-"scrooloose/nerdtree {{{
+"preservim/nerdtree {{{
     function! ToggleNerdTree()
         if @% != "" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
             :NERDTreeFind
@@ -553,6 +554,9 @@
     nmap <silent> <leader>t :NERDTreeFind<cr>
 
     let g:NERDTreeIgnore = ['__pycache__$', 'node_modules$', 'dist$', 'build$']
+
+    " helps with vim-nerdtree-syntax-highlight lag
+    let g:NERDTreeHighlightCursorline = 0
 "}}}
 
 "shinchu/lightline-gruvbox.vim {{{
@@ -569,6 +573,10 @@
     " let g:UltiSnipsListSnippets="<C-l>"
     " let g:UltiSnipsJumpForwardTrigger="<C-l>"
     " let g:UltiSnipsJumpBackwardTrigger="<C-h>"
+"}}}
+
+"tiagofumo/vim-nerdtree-syntax-highlight {{{
+    let g:NERDTreeLimitedSyntax = 1
 "}}}
 
 "tell-k/vim-autopep8 {{{
