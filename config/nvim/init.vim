@@ -27,7 +27,7 @@
     set number              "show current line number
     set relativenumber      "show relative line numbers
     set shiftround          "round indent to a multiple of 'shiftwidth'
-    set shiftwidth=4        "number of spaces to use for indent and unindent
+    set shiftwidth=2        "number of spaces to use for indent and unindent
 	set shortmess+=c        "suppress annoying pattern not found messages
     set showtabline=2       "show tab line at the top
     set smarttab 	        "tab respects tabstop shiftwidth and softtabstop
@@ -65,17 +65,19 @@
         " \ 'branch': 'next',
         " \ 'do': 'bash install.sh',
         " \ }                                 "javascript intellisense
-    Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
+    " Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
     Plug 'fatih/vim-go'                     "go vim tools
     Plug 'galooshi/vim-import-js'           "js import manager
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
     "Plug 'haron-prime/evening_vim'          "colorscheme with better diff
     Plug 'heavenshell/vim-jsdoc'            "jsdoc function comments
     "Plug 'joshdick/onedark.vim'             "colorscheme
-    Plug 'junegunn/fzf.vim'                 "fuzzy file search
+    " use nvim-telescope/telescope-fzf-native instead?
+    " Plug 'junegunn/fzf.vim'                 "fuzzy file search
     Plug 'kannokanno/previm'                "markdown preview
     Plug 'kyazdani42/nvim-web-devicons'     "icons next to filenames
-    Plug 'leafgarland/typescript-vim'       "typescript syntax
+    Plug 'lewis6991/spellsitter.nvim'       "spell check tresitter
+    " Plug 'leafgarland/typescript-vim'       "typescript syntax
     Plug 'majutsushi/tagbar'                "code outline sidebar
     " Plug 'HerringtonDarkholme/yats.vim'     "for nvim-typescript
     " A bug makes this plugin unusable: https://github.com/mhartington/nvim-typescript/issues/267
@@ -85,7 +87,7 @@
     Plug 'mileszs/ack.vim'                  "fuzzy file content search
     Plug 'moll/vim-bbye'                    "close
     Plug 'morhetz/gruvbox'                  "colorscheme
-    Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
+    " Plug 'millermedeiros/vim-esformatter'   "alternate js formatter
     Plug 'mxw/vim-jsx'                      "jsx syntax highlighting
     Plug 'mustache/vim-mustache-handlebars' "mustache handlebars syntax
     " Plug 'ncm2/ncm2'                        "better than <C-X><C-O>
@@ -95,7 +97,11 @@
     Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-    Plug 'othree/yajs.vim'                  "javascript syntax
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax highlighting
+    " Plug 'othree/yajs.vim'                  "javascript syntax
 
     " Replaces nvim-typescript's bugginess
     " Plug 'Quramy/tsuquyomi'                 "typescript goodness
@@ -167,6 +173,10 @@
     endfor
     echon "Deleted " . l:tally . " buffers"
     endfun
+
+    function! Gblamelol()
+      Git blame
+    endfunction
 "}}}
 
 "mappings {{{
@@ -185,8 +195,7 @@
     noremap <leader>/ :call nerdcommenter#Comment(0,"toggle")<CR>
 
     "vim-scripts/BufOnly.vim
-    " nmap <silent><leader>W :%bd|e#<CR>
-    " nmap <silent><leader>W :%bd|e<CR>
+    nmap <silent><leader>W <cmd>BufOnly<CR>
 
     " save
     nmap <leader>, :w<cr>
@@ -229,14 +238,14 @@
     " nnoremap <S-Tab> :bprevious<CR>
 
     " Tab navigation (alacritty)
-    nnoremap “ :tabprevious<CR>
-    nnoremap ‘ :tabnext<CR>
+    " nnoremap “ :tabprevious<CR>
+    " nnoremap ‘ :tabnext<CR>
 
     "popup menu navigation
+    inoremap <expr><C-j> pumvisible() ? "\<C-n>": "\<C-j>"
+    inoremap <expr><C-k> pumvisible() ? "\<C-p>": "\<C-k>"
     inoremap <expr><TAB> pumvisible() ? "\<C-n>": "\<TAB>"
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>": "\<S-TAB>"
-    "inoremap <expr><C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
-    "inoremap <expr><C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
 
     "enter to clear search highlight
     nnoremap <CR> :noh<CR><CR>
@@ -390,6 +399,9 @@
     \   'left': [ ['buffers'] ],
     \   'right': [ ['close'] ]
     \ }
+
+    "Alias Git blame to Gblame
+    :command! -nargs=* Gblame Git blame
 "}}}
 
 "junegunn/fzf{{{
@@ -492,6 +504,13 @@
 "}}}
 
 "neoclide/coc.nvim {{{
+    " autocmd User CocNvimInit call CocAction('runCommand', 'tsserver.watchBuild')
+    command! -nargs=0 Tsc :call CocAction('runCommand', 'tsserver.watchBuild')
+
+    let g:coc_disable_transparent_cursor=1
+    nnoremap <silent><expr> <leader>s coc#refresh()
+
+    inoremap <silent><expr> <c-space> coc#refresh()
     nnoremap <silent>gd :call CocActionAsync('jumpDefinition')<CR>
     nnoremap <silent>gr :call CocActionAsync('jumpReferences')<CR>
     nnoremap <silent>gn :call CocActionAsync('rename')<CR>
@@ -502,9 +521,86 @@
     nnoremap <silent>ga :call CocActionAsync('diagnosticToggleBuffer')<CR>
     nnoremap <silent>go :call CocActionAsync('showOutline')<CR>
     nnoremap <silent>gp :call CocActionAsync('hideOutline')<CR>
+    " nnoremap <silent>gx :call CocActionAsync('quickfixes')<CR>
+    nnoremap <silent>gx <Plug>(coc-fix-current)
+    nnoremap <silent>gl :CocList diagnostics<CR>
     " nnoremap <silent>gd :call CocAction('jumpDeclaration')<CR>
     " nnoremap <silent>gd :call CocAction('jumpImplementation')<CR>
     " nnoremap <silent>gd :call CocAction('jumpTypeDefinition')<CR>
+"}}}
+
+"nvim-telescope/telescope.nvim {{{
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <C-[> <cmd>Telescope live_grep<cr>
+nnoremap <C-]> <cmd>Telescope grep_string<cr>
+nnoremap <C-A-p> <cmd>Telescope builtin<cr>
+" nnoremap <C-p>f <cmd>Telescope buffers<cr>
+" nnoremap <C-p>f <cmd>Telescope buffers<cr>
+" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+lua << EOF
+require('spellsitter').setup {
+  -- Whether enabled, can be a list of filetypes, e.g. {'python', 'lua'}
+  enable = true,
+
+  -- Highlight to use for bad spellings
+  hl = 'SpellBad',
+
+  -- Spellchecker to use. values:
+  -- * vimfn: built-in spell checker using vim.fn.spellbadword()
+  -- * ffi: built-in spell checker using the FFI to access the
+  --   internal spell_check() function
+  spellchecker = 'vimfn',
+}
+EOF
+
+lua << EOF
+require('telescope').setup{
+defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+        i = {
+            -- map actions.which_key to <C-h> (default: <C-/>)
+            -- actions.which_key shows the mappings for your picker,
+            -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+            ["<C-j>"] = "move_selection_next",
+            ["<C-k>"] = "move_selection_previous",
+            ["<C-y>"] = "move_to_top",
+            ["<C-h>"] = "move_to_middle",
+            ["<C-n>"] = "move_to_bottom",
+        }
+    }
+  }
+}
+EOF
+"}}}
+
+"nvim-treesitter/nvim-treesitter {{{
+" Force tsx highlighting for both jsx and tsx files
+autocmd bufnewfile,bufread *.tsx set filetype=tsx
+autocmd bufnewfile,bufread *.jsx set filetype=tsx
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = 'maintained',
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  incremental_selection = {
+    enable = false,
+    keymaps = {
+      -- init_selection = "gnn",
+      -- node_incremental = "grn",
+      -- scope_incremental = "grc",
+      -- node_decremental = "grm",
+    },
+  },
+}
+EOF
 "}}}
 
 "mhartington/nvim-typescript {{{
@@ -521,6 +617,8 @@
 "{{{ romgrk/barbar.nvim
 nnoremap <silent> <Tab> :BufferNext<CR>
 nnoremap <silent> <S-Tab> :BufferPrevious<CR>
+nnoremap <silent>‘ :BufferNext<CR>
+nnoremap <silent>“ :BufferPrevious<CR>
 nnoremap <silent> ≤ :BufferMovePrevious<CR>
 nnoremap <silent> ≥ :BufferMoveNext<CR>
 nnoremap <silent> ¡ :BufferGoto 1<CR>
@@ -613,8 +711,11 @@ nnoremap <silent> <leader>w :BufferClose<cr>
     \   'typescript': ['prettier'],
     \   'javascript': ['prettier'],
     \   'JSON': ['prettier'],
-    \   'markdown': ['prettier']
+    \   'markdown': ['prettier'],
+    \   'xml': ['xmllint']
     \}
+
+    let g:ale_xml_xmllint_options = '--format'
 
     "'typescript': ['tsserver', 'tslint'],
 
@@ -622,6 +723,7 @@ nnoremap <silent> <leader>w :BufferClose<cr>
     \   'typescript': ['tslint'],
     \   'javascript': ['eslint'],
     \   'java': ['javac'],
+    \   'xml': ['xmllint']
     \}
 "}}}
 

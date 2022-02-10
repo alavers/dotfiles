@@ -40,6 +40,7 @@ brew install python
 brew install python3
 brew install fasd
 brew install fzf
+brew install ripgrep
 
 # databases
 brew install redis
