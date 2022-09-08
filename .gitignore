@@ -11,3 +11,4 @@ config/Karabiner/automatic_backups
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
 
+Brewfile.lock.json

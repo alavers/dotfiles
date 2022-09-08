@@ -38,6 +38,7 @@ if [ -e ~/.vars ];then
 fi
 
 # Path vars
+export GPG_TTY=$(tty)
 export SHELL=$(which zsh)
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -160,10 +161,10 @@ function swap()
 
 function keys() {
     eval `ssh-agent -s`
-    ssh-add -K ~/.ssh/alavers@system42.net
-    ssh-add -K ~/.ssh/andrew+dieu@smooch.io
-    ssh-add -K ~/.ssh/andrew@smooch.io
-    ssh-add -K ~/.ssh/alavers@zendesk.com
+    ssh-add --apple-use-keychain ~/.ssh/alavers@system42.net
+    ssh-add --apple-use-keychain ~/.ssh/andrew+dieu@smooch.io
+    ssh-add --apple-use-keychain ~/.ssh/andrew@smooch.io
+    ssh-add --apple-use-keychain ~/.ssh/alavers@zendesk.com
 }
 
 alias saml="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SMOOCH_INTERNAL_ARN --profile smooch-internal"
