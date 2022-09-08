@@ -1,0 +1,7 @@
+export DOTFILES="$(dirname "$(dirname "$(readlink "${(%):-%N}")")")"
+export CACHEDIR="$HOME/.local/share"
+
+[[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
+
+export EDITOR='nvim'
+export GIT_EDITOR='nvim'
