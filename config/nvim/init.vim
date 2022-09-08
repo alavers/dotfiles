@@ -65,7 +65,7 @@
         " \ 'branch': 'next',
         " \ 'do': 'bash install.sh',
         " \ }                                 "javascript intellisense
-    " Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
+    Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
     Plug 'fatih/vim-go'                     "go vim tools
     Plug 'galooshi/vim-import-js'           "js import manager
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
@@ -97,10 +97,12 @@
     Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
     Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    Plug 'nvim-telescope/telescope.nvim'
+    " Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    " Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax highlighting
+    Plug 'nvim-treesitter/nvim-treesitter-context'
     " Plug 'othree/yajs.vim'                  "javascript syntax
 
     " Replaces nvim-typescript's bugginess
@@ -556,26 +558,35 @@ require('spellsitter').setup {
 }
 EOF
 
-lua << EOF
-require('telescope').setup{
-defaults = {
-    -- Default configuration for telescope goes here:
-    -- config_key = value,
-    mappings = {
-        i = {
-            -- map actions.which_key to <C-h> (default: <C-/>)
-            -- actions.which_key shows the mappings for your picker,
-            -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-            ["<C-j>"] = "move_selection_next",
-            ["<C-k>"] = "move_selection_previous",
-            ["<C-y>"] = "move_to_top",
-            ["<C-h>"] = "move_to_middle",
-            ["<C-n>"] = "move_to_bottom",
-        }
-    }
-  }
-}
-EOF
+" lua << EOF
+" require('telescope').setup{
+" defaults = {
+    " -- Default configuration for telescope goes here:
+    " -- config_key = value,
+    " file_ignore_patterns = {'node_modules', 'dist', 'dist-public'},
+    " mappings = {
+        " i = {
+            " -- map actions.which_key to <C-h> (default: <C-/>)
+            " -- actions.which_key shows the mappings for your picker,
+            " -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+            " ["<C-j>"] = "move_selection_next",
+            " ["<C-k>"] = "move_selection_previous",
+            " ["<C-y>"] = "move_to_top",
+            " ["<C-h>"] = "move_to_middle",
+            " ["<C-n>"] = "move_to_bottom",
+        " }
+    " },
+    " extensions = {
+      " fzf = {
+        " fuzzy = true,                    -- false will only do exact matching
+        " override_generic_sorter = true,  -- override the generic sorter
+        " override_file_sorter = true,     -- override the file sorter
+        " case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+      " }
+    " }
+  " }
+" }
+" EOF
 "}}}
 
 "nvim-treesitter/nvim-treesitter {{{

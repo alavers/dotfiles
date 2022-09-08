@@ -44,9 +44,9 @@ windows:
       panes:
         - npm run ts:watch
         - npm run app:watch
-        - npm run worker:watch
-        - npm run worker:webhook:watch
+        - npm run workers:watch
         - npm run webpack
+        - npm run service:websocket:watch
   - misc:
       layout: main-horizontal
       panes:
