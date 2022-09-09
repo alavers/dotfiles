@@ -1,40 +1,10 @@
-#zshrc profiling
-#zmodload zsh/zprof
+# zfetch is a tiny plugin manager
+autoload -U "$DOTFILES/zsh/functions/zfetch"
 
-source $HOME/antigen.zsh
+# initialize autocomplete
+autoload -U compinit add-zsh-hook
+compinit
 
-# Load the oh-my-zsh's library.
-antigen use oh-my-zsh
-
-# Bundles from the default repo (robbyrussell's oh-my-zsh).
-#export NVM_NO_USE=true
-# antigen bundle lukechilds/zsh-nvm
-antigen bundle jonmosco/kube-ps1
-antigen bundle zsh-users/zsh-autosuggestions
-#antigen bundle pyenv
-antigen bundle git
-# antigen bundle docker
-antigen bundle fasd
-# antigen bundle kubectl
-#antigen bundle tmuxinator
-#antigen bundle lein
-# antigen bundle command-not-found
-
-# Syntax highlighting bundle.
-#antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Load the theme.
-antigen theme avit
-
-# Tell Antigen that you're done.
-antigen apply
-
-# Env vars go here
-if [ -e ~/.vars ];then
-    source ~/.vars 
-fi
-
-# Path vars
 export GPG_TTY=$(tty)
 export SHELL=$(which zsh)
 export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
@@ -42,44 +12,37 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH="$PATH:$HOME/.rvm/bin"
 
-# fnm = fast node version manager
-if [[ -x "$(command -v fnm)" ]]; then
-    eval "$(fnm env --use-on-cd)"
+# env vars
+if [ -e ~/.vars ];then
+    source ~/.vars
 fi
 
+# vim aliases
 alias vim='nvim'
 alias vimdiff='nvim -d'
+
+# git aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
+alias gdca='git diff --cached'
 alias cleanbranches='git branch --merged | grep -v "\*" | grep -v master | grep -v dev | xargs -n 1 git branch -d'
 
-# Kubectl
-alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
-alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
-
-alias restore-cursor="tput cnorm"
-alias quiet="osascript -e \"set Volume 0.1\""
-alias quieter="osascript -e \"set Volume 0.01\""
-
+# docker aliases
 alias dps="docker ps --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\""
 alias dpsa="docker ps -a --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\""
 
-# Pretty unix timestamp
+# kubectl aliases
+alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
+alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
+alias kc='source <(kubectl completion zsh)'
+alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
+
+# pretty unix timestamp
 function tz {
     TZ=Canada/Eastern date -r $1
 }
 
-# Get current unix timetamp
+# get current unix timetamp
 function ts {
     echo $(date +%s)
-}
-
-# Run grep'd tests
-function stg {
-    local qw=\'
-    eval mocha 'test/server/**/*.js' --grep $qw$@$qw
-}
-function stgd {
-    local qw=\'
-    eval LOG_LEVEL=debug mocha 'test/server/**/*.js' --grep $qw$@$qw
 }
 
 function swap()         
@@ -93,14 +56,13 @@ function swap()
 function keys() {
     eval `ssh-agent -s`
     ssh-add --apple-use-keychain ~/.ssh/alavers@system42.net
-    ssh-add --apple-use-keychain ~/.ssh/andrew+dieu@smooch.io
-    ssh-add --apple-use-keychain ~/.ssh/andrew@smooch.io
     ssh-add --apple-use-keychain ~/.ssh/alavers@zendesk.com
 }
 
-alias saml="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SMOOCH_INTERNAL_ARN --profile smooch-internal"
-alias samlp="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SMOOCH_PROD_ARN --profile smooch-prod"
-alias samls="saml2aws login --duo-mfa-option=\"Duo Push\" --role $SANDBOX_ARN --profile default"
+# fnm = fast node version manager
+if [[ -x "$(command -v fnm)" ]]; then
+    eval "$(fnm env --use-on-cd)"
+fi
 
 # https://gist.github.com/QinMing/364774610afc0e06cc223b467abe83c0
 lazy_load() {
@@ -148,44 +110,34 @@ pyenv() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended"
 
-#zshrc profiling
-#zprof
+########################################################
+# Completion
+########################################################
 
-# Change prompt caret to skull when in prod context
-caret() {
-    [[ $KUBE_PS1_CONTEXT =~ "prod" ]] && echo "%{$fg[red]%}HOPE YOU KNOW WHAT THE FUCK YOU'RE DOING\n☠️" || echo "$"
-}
-
-k8s_namespace() {
-    echo "%{$fg[yellow]%}$KUBECTL_NAMESPACE%{$resetcolor%}"
-}
-
-# avid theme PROMPT override for KUBE_PS1
-KUBE_PS1_SEPARATOR=''
-KUBE_PS1_NS_ENABLE=''
-KUBE_PS1_PREFIX=''
-KUBE_PS1_SUFFIX=''
-PS1='
-%{$fg[blue]%}${PWD/#$HOME/'~'}%{$reset_color%} $(kube_ps1) $(k8s_namespace) $(git_prompt_info) 
-%{$fg[$CARETCOLOR]%}$(caret)%{$reset_color%} '
+# kubectl completion
+source <(kubectl completion zsh)
 
 # Google cloud SDK completion
 source "`brew --prefix`/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "`brew --prefix`/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
-# Kubectl auto completion
-# This does not work when run via zshrc for some reason
-source <(kubectl completion zsh)
-alias kc='source <(kubectl completion zsh)'
-alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
+########################################################
+# Plugins
+########################################################
 
-function kns { export KUBECTL_NAMESPACE=$* }
+export ZPLUGDIR="$CACHEDIR/zsh/plugins"
+[[ -d "$ZPLUGDIR" ]] || mkdir -p "$ZPLUGDIR"
+# array containing plugin information (managed by zfetch)
+typeset -A plugins
 
-# export DOCKER_HOST=tcp://192.168.42.45:2375
-export DOCKER_HOST=
-export AWS_ENABLED=false
+zfetch mafredri/zsh-async async.plugin.zsh
+zfetch zsh-users/zsh-autosuggestions
+zfetch zsh-users/zsh-syntax-highlighting
+zfetch Aloxaf/fzf-tab
 
-# BEGIN ZDI
-# export AWS_ENABLED=true
-# source /Users/alavers/git/zendesk/zdi/dockmaster/zdi.sh
-# END ZDI
+source "$DOTFILES/zsh/utils.zsh"
+source "$DOTFILES/zsh/prompt.zsh"
+
+if [[ -a ~/.localrc ]]; then
+    source ~/.localrc
+fi
