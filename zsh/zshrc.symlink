@@ -32,7 +32,6 @@ alias dpsa="docker ps -a --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.St
 # kubectl aliases
 alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
 alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
-alias kc='source <(kubectl completion zsh)'
 alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
 
 # pretty unix timestamp
@@ -109,6 +108,14 @@ pyenv() {
 # FZF shell keybindings (CTRL-R and CTRL-T)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended"
+
+# Initialize fasd, needed for z to work
+fasd_cache="$HOME/.fasd-init-zsh"
+if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+  fasd --init posix-alias zsh-hook >| "$fasd_cache"
+fi
+source "$fasd_cache"
+unset fasd_cache
 
 ########################################################
 # Completion
