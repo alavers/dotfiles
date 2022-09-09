@@ -11,6 +11,7 @@ export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH="$PATH:$HOME/.rvm/bin"
+export CLICOLOR=1 # ls colors
 
 # env vars
 if [ -e ~/.vars ];then
@@ -38,6 +39,19 @@ alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.
 alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
 alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
 
+# common aliases https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/common-aliases/common-aliases.plugin.zsh
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+alias ll='ls -l'      #long list
+alias ldot='ls -ld .*'
+
+alias zshrc='${=EDITOR} $DOTFILES/zsh/zshrc.symlink' # Quick access to the .zshrc file
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 ########################################################
 # Zsh options https://zsh.sourceforge.io/Guide/zshguide02.html
@@ -88,6 +102,7 @@ fi
 bindkey "^A" vi-beginning-of-line
 bindkey -M viins "^F" vi-forward-word               # [Ctrl-f] - move to next word
 bindkey -M viins "^E" vi-add-eol                    # [Ctrl-e] - move to end of line
+bindkey -M viins "^U" backward-kill-line            # [Ctrl-u] - delete before cursor
 bindkey "^J" history-beginning-search-forward
 bindkey "^K" history-beginning-search-backward
 

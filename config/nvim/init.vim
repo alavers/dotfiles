@@ -67,6 +67,7 @@
         " \ }                                 "javascript intellisense
     Plug 'ctrlpvim/ctrlp.vim'               "fuzzy file search
     Plug 'fatih/vim-go'                     "go vim tools
+    Plug 'fladson/vim-kitty'                "syntax highlighting for kitty.conf
     Plug 'galooshi/vim-import-js'           "js import manager
     Plug 'geekjuice/vim-mocha'              "run mocha tests in vim
     "Plug 'haron-prime/evening_vim'          "colorscheme with better diff
