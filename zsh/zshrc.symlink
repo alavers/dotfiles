@@ -103,6 +103,8 @@ bindkey "^A" vi-beginning-of-line
 bindkey -M viins "^F" vi-forward-word               # [Ctrl-f] - move to next word
 bindkey -M viins "^E" vi-add-eol                    # [Ctrl-e] - move to end of line
 bindkey -M viins "^U" backward-kill-line            # [Ctrl-u] - delete before cursor
+bindkey "^P" up-line-or-search                      # [Ctrl-p] - previous commands
+bindkey "^N" down-line-or-search                    # [Ctrl-n] - next command
 bindkey "^J" history-beginning-search-forward
 bindkey "^K" history-beginning-search-backward
 
