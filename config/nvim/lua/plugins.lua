@@ -9,10 +9,7 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  use {
-    'svrana/neosolarized.nvim',
-    requires = { 'tjdevries/colorbuddy.nvim' }
-  }
+  use 'sainnhe/gruvbox-material'
   use 'kyazdani42/nvim-web-devicons' -- File icons
   use 'glepnir/lspsaga.nvim' -- LSP UIs
   use 'L3MON4D3/LuaSnip'
@@ -43,4 +40,6 @@ packer.startup(function(use)
 
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim' -- For git blame & browse
+
+  use 'numToStr/Comment.nvim' -- Toggle comments
 end)
