@@ -24,6 +24,7 @@ fi
 
 # vim aliases
 alias vim='nvim'
+alias vimo='nvim -u ~/.config/nvim/init-old.vim'
 alias vimdiff='nvim -d'
 
 # git aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git

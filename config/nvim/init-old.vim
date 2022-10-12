@@ -102,8 +102,10 @@
     Plug 'nvim-lua/plenary.nvim'
     " Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     " Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax highlighting
-    Plug 'nvim-treesitter/nvim-treesitter-context'
+    "
+    " Treesitter broken for some reason with nvim 8.0
+    " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax highlighting
+    " Plug 'nvim-treesitter/nvim-treesitter-context'
     " Plug 'othree/yajs.vim'                  "javascript syntax
 
     " Replaces nvim-typescript's bugginess
@@ -592,27 +594,27 @@ EOF
 
 "nvim-treesitter/nvim-treesitter {{{
 " Force tsx highlighting for both jsx and tsx files
-autocmd bufnewfile,bufread *.tsx set filetype=tsx
-autocmd bufnewfile,bufread *.jsx set filetype=tsx
+" autocmd bufnewfile,bufread *.tsx set filetype=tsx
+" autocmd bufnewfile,bufread *.jsx set filetype=tsx
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = 'maintained',
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  incremental_selection = {
-    enable = false,
-    keymaps = {
-      -- init_selection = "gnn",
-      -- node_incremental = "grn",
-      -- scope_incremental = "grc",
-      -- node_decremental = "grm",
-    },
-  },
-}
-EOF
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+  " ensure_installed = 'maintained',
+  " highlight = {
+    " enable = true,
+    " additional_vim_regex_highlighting = false,
+  " },
+  " incremental_selection = {
+    " enable = false,
+    " keymaps = {
+      " -- init_selection = "gnn",
+      " -- node_incremental = "grn",
+      " -- scope_incremental = "grc",
+      " -- node_decremental = "grm",
+    " },
+  " },
+" }
+" EOF
 "}}}
 
 "mhartington/nvim-typescript {{{
