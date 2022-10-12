@@ -1,7 +1,24 @@
 local keymap = vim.keymap
 
+vim.g.mapleader = ','
+
+-- Save with ,,
+keymap.set('n', '<leader>,', ':w<cr>')
+
+-- Cusor behave with wrapped lines
+keymap.set('n', 'j', 'gj')
+keymap.set('n', 'k', 'gk')
+keymap.set('v', 'j', 'gj')
+keymap.set('v', 'k', 'gk')
+
+-- Enter to clear search highlight
+keymap.set('n', '<cr>', ':noh<cr><cr>')
+
 -- Do not yank with x
 keymap.set('n', 'x', '"_x')
+
+-- Delete and visual replace without replacing clipboard
+keymap.set('v', 'p', '"_dP')
 
 -- Increment/decrement
 keymap.set('n', '+', '<C-a>')
@@ -9,9 +26,6 @@ keymap.set('n', '-', '<C-x>')
 
 -- Delete a word backwards
 keymap.set('n', 'dw', 'vb"_d');
-
--- Select all
-keymap.set('n', '<C-a>', 'gg<S-v>G')
 
 -- New tab
 keymap.set('n', 'te', ':tabedit<Return>', { silent = true })
