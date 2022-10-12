@@ -39,7 +39,10 @@ packer.startup(function(use)
   use 'norcalli/nvim-colorizer.lua'
 
   use 'lewis6991/gitsigns.nvim'
-  use 'dinhhuy258/git.nvim' -- For git blame & browse
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
+  use 'tpope/vim-surround'
+  use 'tpope/vim-unimpaired'
 
   use 'numToStr/Comment.nvim' -- Toggle comments
 end)
