@@ -28,6 +28,7 @@ vim.opt.wrap = false
 vim.opt.backspace = 'start,eol,indent'
 vim.opt.path:append { '**' } -- Finding files - Search down into subfolders
 vim.opt.wildignore:append { '*/node_modules/*' }
+vim.opt.relativenumber = true
 
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
@@ -40,4 +41,4 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 -- })
 
 -- Sensible comment wrapping behavior
-vim.cmd[[autocmd FileType * setlocal formatoptions-=cro]]
+vim.cmd [[autocmd FileType * setlocal formatoptions-=cro]]

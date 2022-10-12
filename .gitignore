@@ -7,6 +7,7 @@ config/nvim/spell
 config/nvim/shada
 config/nvim/plugged
 config/nvim/undodir
+config/nvim/after/syntax
 config/Karabiner/automatic_backups
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
