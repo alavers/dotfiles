@@ -21,9 +21,9 @@ packer.startup(function(use)
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
   use 'hrsh7th/cmp-nvim-lua'
-
   use 'saadparwaiz1/cmp_luasnip' -- Snippet completion
 
+  use 'gpanders/editorconfig.nvim'
   use 'neovim/nvim-lspconfig' -- LSP
   use {
     'nvim-treesitter/nvim-treesitter',
