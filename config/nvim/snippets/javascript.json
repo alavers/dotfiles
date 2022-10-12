@@ -1,0 +1,126 @@
+{
+  "new Promise": {
+    "prefix": "np",
+    "body": "new Promise((resolve, reject) => {\n\t${0}\n})"
+  },
+  "describe": {
+    "prefix": "desc",
+    "body": "describe('${1:description}', () => {\n\t${0}\n})"
+  },
+  "it asynchronous": {
+    "prefix": "it",
+    "body": "it('${1:description}', async () => {\n\t${0}\n})"
+  },
+  "it synchronous": {
+    "prefix": "its",
+    "body": "it('${1:description}', () => {\n\t${0}\n})"
+  },
+  "before": {
+    "prefix": "bf",
+    "body": "before(async () => {\n\t${0}\n})"
+  },
+  "beforeAll": {
+    "prefix": "ba",
+    "body": "beforeAll(async () => {\n\t${0}\n})"
+  },
+  "beforeEach": {
+    "prefix": "bfe",
+    "body": "beforeEach(async () => {\n\t${0}\n})"
+  },
+  "after": {
+    "prefix": "aft",
+    "body": "after(() => {\n\t${0}\n})"
+  },
+  "afterEach": {
+    "prefix": "afe",
+    "body": "afterEach(() => {\n\t${0}\n})"
+  },
+  "require": {
+    "prefix": "rq",
+    "body": "require('${1:module}')"
+  },
+  "forEach loop": {
+    "prefix": "fe",
+    "body": "${1:iterable}.forEach((${2:item}) => {\n\t${0}\n})"
+  },
+  "map": {
+    "prefix": "map",
+    "body": "${1:iterable}.map((${2:item}) => {\n\t${0}\n})"
+  },
+  "reduce": {
+    "prefix": "reduce",
+    "body": "${1:iterable}.reduce((${2:previous}, ${3:current}) => {\n\t${0}\n}${4:, initial})"
+  },
+  "filter": {
+    "prefix": "filter",
+    "body": "${1:iterable}.filter((${2:item}) => {\n\t${0}\n})"
+  },
+  "find": {
+    "prefix": "find",
+    "body": "${1:iterable}.find((${2:item}) => {\n\t${0}\n})"
+  },
+  "every": {
+    "prefix": "every",
+    "body": "${1:iterable}.every((${2:item}) => {\n\t${0}\n})"
+  },
+  "some": {
+    "prefix": "some",
+    "body": "${1:iterable}.some((${2:item}) => {\n\t${0}\n})"
+  },
+  "try/catch": {
+    "prefix": "tc",
+    "body": "try {\n\t${0}\n} catch (${1:err}) {\n\t\n}"
+  },
+  "try/finally": {
+    "prefix": "tf",
+    "body": "try {\n\t${0}\n} finally {\n\t\n}"
+  },
+  "try/catch/finally": {
+    "prefix": "tcf",
+    "body": "try {\n\t${0}\n} catch (${1:err}) {\n\t\n} finally {\n\t\n}"
+  },
+  "console.log": {
+    "prefix": "cl",
+    "body": "console.log(${0})"
+  },
+  "console.log a variable": {
+    "prefix": "cv",
+    "body": "console.log('${1}:', ${1})"
+  },
+  "console.error": {
+    "prefix": "ce",
+    "body": "console.error(${0})"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-Each Loop": {
+    "prefix": "foreach",
+    "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
+    "description": "For-Each Loop"
+  },
+  "For-In Loop": {
+    "prefix": "forin",
+    "body": [
+      "for (const ${1:key} in ${2:object}) {",
+      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "For-In Loop"
+  },
+  "For-Of Loop": {
+    "prefix": "forof",
+    "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+    "description": "For-Of Loop"
+  }
+}

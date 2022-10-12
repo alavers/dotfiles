@@ -15,9 +15,15 @@ packer.startup(function(use)
   use 'L3MON4D3/LuaSnip'
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
-  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
+
   use 'hrsh7th/nvim-cmp' -- Completion
+  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
+  use 'hrsh7th/cmp-nvim-lua'
+
+  use 'saadparwaiz1/cmp_luasnip' -- Snippet completion
+
   use 'neovim/nvim-lspconfig' -- LSP
   use {
     'nvim-treesitter/nvim-treesitter',
