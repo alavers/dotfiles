@@ -13,29 +13,27 @@ bufferline.setup({
     show_buffer_close_icons = false,
     show_close_icon = false,
     color_icons = true,
-    offsets = { { filetype = "NvimTree", text = "", padding = 1 } },
-    indicator = {
-      style = 'underline'
-    }
+    offsets = { { filetype = "NvimTree", text = "", padding = 1 } }
   },
   highlights = {
     separator = {
-      fg = '#073642',
-      bg = '#002b36',
+      fg = '#504945',
+      bg = '#3c3836'
     },
     separator_selected = {
-      fg = '#073642',
+      fg = '#504945',
+      bg = '#1d2021'
     },
     background = {
-      fg = '#657b83',
-      bg = '#002b36'
+      fg = '#a89983',
+      bg = '#3c3836'
     },
     buffer_selected = {
       fg = '#fdf6e3',
       bold = true,
     },
     fill = {
-      bg = '#073642'
+      bg = '#504945'
     }
   },
 })
