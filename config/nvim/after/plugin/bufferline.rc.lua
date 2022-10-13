@@ -34,6 +34,12 @@ bufferline.setup({
     },
     fill = {
       bg = '#504945'
+    },
+    modified = {
+      bg = '#3c3836'
+    },
+    modified_selected = {
+      bg = '#1d2021'
     }
   },
 })
