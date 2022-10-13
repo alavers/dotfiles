@@ -16,6 +16,16 @@ local enable_format_on_save = function(_, bufnr)
   })
 end
 
+function _G.toggle_diagnostics()
+  if vim.g.diagnostics_visible then
+    vim.g.diagnostics_visible = false
+    vim.diagnostic.hide()
+  else
+    vim.g.diagnostics_visible = true
+    vim.diagnostic.show()
+  end
+end
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
@@ -30,7 +40,9 @@ local on_attach = function(_, bufnr)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<leader>d', '<Cmd>lua toggle_diagnostics()<CR>', opts)
+
   -- lspsaga does these better
   --buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   --buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -107,8 +119,15 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = { spacing = 4, prefix = "●" },
-  severity_sort = true,
+  signs = {
+    severity_limit = 'Warning',
+  },
+  virtual_text = {
+    spacing = 4,
+    prefix = "●",
+    severity_limit = 'Warning'
+  },
+  severity_sort = true
 }
 )
 
@@ -126,5 +145,5 @@ vim.diagnostic.config({
   update_in_insert = true,
   float = {
     source = "always", -- Or "if_many"
-  },
+  }
 })
