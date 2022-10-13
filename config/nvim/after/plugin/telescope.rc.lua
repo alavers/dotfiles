@@ -14,7 +14,15 @@ telescope.setup {
   defaults = {
     mappings = {
       n = {
-        ['q'] = actions.close
+        ["<C-h>"] = actions.which_key,
+        ['q'] = actions.close,
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous
+      },
+      i = {
+        ["<C-h>"] = actions.which_key,
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous
       }
     }
   },
