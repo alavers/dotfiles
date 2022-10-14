@@ -24,13 +24,21 @@ bufferline.setup({
       fg = '#504945',
       bg = '#1d2021'
     },
+    separator_visible = {
+      fg = '#504945',
+      bg = '#3c3836'
+    },
     background = {
       fg = '#a89983',
       bg = '#3c3836'
     },
     buffer_selected = {
       fg = '#fdf6e3',
+      bg = '#1d2021',
       bold = true,
+    },
+    buffer_visible = {
+      bg = '#3c3836',
     },
     fill = {
       bg = '#504945'
@@ -40,6 +48,18 @@ bufferline.setup({
     },
     modified_selected = {
       bg = '#1d2021'
+    },
+    modified_visible = {
+      bg = '#3c3836'
+    },
+    duplicate = {
+      bg = '#3c3836'
+    },
+    duplicate_selected = {
+      bg = '#1d2021'
+    },
+    duplicate_visible = {
+      bg = '#3c3836'
     }
   },
 })
