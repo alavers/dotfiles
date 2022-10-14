@@ -9,6 +9,8 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
+
+  use 'mileszs/ack.vim' -- File search
   use 'sainnhe/gruvbox-material'
   use 'kyazdani42/nvim-web-devicons' -- File icons
   use 'glepnir/lspsaga.nvim' -- LSP UIs

@@ -2,6 +2,11 @@ local keymap = vim.keymap
 
 vim.g.mapleader = ','
 
+-- Toggle quickfix window
+keymap.set('n', '<leader>q', ':copen 40<cr>', { silent = true })
+keymap.set('n', '<leader>a', ':copen 10<cr>', { silent = true })
+keymap.set('n', '<leader>z', ':lua toggle_qf()<cr>', { silent = true })
+
 -- Save with ,,
 keymap.set('n', '<leader>,', ':w<cr>')
 

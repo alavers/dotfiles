@@ -2,6 +2,7 @@ require('base')
 require('highlights')
 require('maps')
 require('plugins')
+require('toggle_qf')
 
 local is_mac = vim.fn.has "macunix"
 local is_win = vim.fn.has "win32"
