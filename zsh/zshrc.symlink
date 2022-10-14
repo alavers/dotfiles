@@ -10,7 +10,6 @@ export SHELL=$(which zsh)
 export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-export PATH="$PATH:$HOME/.rvm/bin"
 export CLICOLOR=1 # ls colors
 
 # env vars
@@ -165,7 +164,7 @@ lazy_load() {
         names=($1)
     fi
     unalias "${names[@]}"
-    . $2
+    $2
     shift 2
     $*
 }
@@ -179,10 +178,14 @@ group_lazy_load() {
     done
 }
 
-# Lazy load rvm
-group_lazy_load $HOME/.rvm/scripts/rvm rvm tmuxinator irb rake rails
+init_rbenv() {
+  eval "$(rbenv init -)"
+}
 
-# Lazy load pyenv, 
+# Lazy load rbenv
+group_lazy_load init_rbenv rbenv ruby tmuxinator irb rake rails
+
+# Lazy load pyenv
 pyenv() {
     eval "$(command pyenv init -)"
     pyenv "$@"
