@@ -51,3 +51,7 @@ keymap.set('n', 's<left>', '<C-w>5>')
 keymap.set('n', 's<right>', '<C-w>5<')
 keymap.set('n', 's<up>', '<C-w>5+')
 keymap.set('n', 's<down>', '<C-w>5-')
+
+-- Disable trackpad from horizontally scorlling
+keymap.set('n', '<ScrollWheelLeft>', '<nop>');
+keymap.set('n', '<ScrollWheelRight>', '<nop>');
