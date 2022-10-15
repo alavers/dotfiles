@@ -19,10 +19,10 @@ vim.keymap.set("n", "<C-k>", function()
 end, opts)
 
 -- Only jump to warning
-vim.keymap.set("n", "[w", function()
+vim.keymap.set("n", "]w", function()
   require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.WARN })
 end, opts)
-vim.keymap.set("n", "]w", function()
+vim.keymap.set("n", "[w", function()
   require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.WARN })
 end, opts)
 
