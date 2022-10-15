@@ -60,3 +60,16 @@ keymap.set('n', 's<down>', '<C-w>5-')
 -- Disable trackpad from horizontally scorlling
 keymap.set('n', '<ScrollWheelLeft>', '<nop>');
 keymap.set('n', '<ScrollWheelRight>', '<nop>');
+
+-- tpope/fugitive mappings
+
+-- white people are uncomfortable with saying the word 'master' in front of black people so they
+-- sometimes rename a repo default branch from master to main. Thus, this bullshit becomes necessary
+function default_branch()
+  return vim.fn.system([[git branch -l master main | sed 's/^* //' | tr -d '[:space:]']])
+end
+
+vim.keymap.set('n', '<leader>gm', function()
+  -- Git diff master:% %
+  vim.api.nvim_command('Git diff ' .. default_branch() .. ':% %')
+end)
