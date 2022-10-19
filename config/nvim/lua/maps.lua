@@ -23,10 +23,9 @@ keymap.set('n', '<cr>', ':noh<cr><cr>')
 keymap.set('n', 'x', '"_x')
 
 -- Delete and visual replace without replacing clipboard
-keymap.set('v', 'p', '"_dP')
+keymap.set('v', 'p', '"+P')
 
 -- Copy current file path to clipboard
--- nmap <Leader>fr :let @*=expand("%")<CR>
 keymap.set('n', '<Leader>fp', ':let @*=expand("%:p")<cr>')
 
 -- Increment/decrement
