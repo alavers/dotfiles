@@ -32,8 +32,8 @@ packer.startup(function(use)
 
   -- Debug Adapter Protocol
   use 'mfussenegger/nvim-dap'
-  use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} }
-  use { 'mxsdev/nvim-dap-vscode-js', requires = {'mfussenegger/nvim-dap'} }
+  use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
+  use { 'mxsdev/nvim-dap-vscode-js', requires = { 'mfussenegger/nvim-dap' } }
   use {
     "microsoft/vscode-js-debug",
     opt = true,
@@ -67,4 +67,6 @@ packer.startup(function(use)
   use 'tpope/vim-unimpaired'
 
   use 'numToStr/Comment.nvim' -- Toggle comments
+  use 'klen/nvim-test'
+
 end)
