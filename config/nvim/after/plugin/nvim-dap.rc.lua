@@ -7,15 +7,17 @@ if (not status2) then return end
 local status3, dap_vscode_js = pcall(require, 'dap-vscode-js')
 if (not status3) then return end
 
-vim.keymap.set('n', '<F5>', ':lua require"dap".continue()<CR>')
-vim.keymap.set('n', '<F1>', ':lua require"dap".step_over()<CR>')
-vim.keymap.set('n', '<F2>', ':lua require"dap".step_into()<CR>')
-vim.keymap.set('n', '<F3>', ':lua require"dap".step_out()<CR>')
-vim.keymap.set('n', '<leader>b', ':lua require"dap".toggle_breakpoint()<CR>')
-vim.keymap.set('n', '<leader>B', ':lua require"dap".set_breakpoint("Breakpoint condition: ")<CR>')
-vim.keymap.set('n', '<leader>lp', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>')
-vim.keymap.set('n', '<leader>dr', ':lua require"dap".repl.open()<CR>')
-vim.keymap.set('n', '<leader>dl', ':lua require"dap".run_last()<CR>')
+vim.keymap.set('n', '<F5>', '<cmd>lua require"dap".continue()<cr>')
+vim.keymap.set('n', '<F6>', '<cmd>lua require"dap".terminate()<cr>')
+vim.keymap.set('n', '<F1>', '<cmd>lua require"dap".step_over()<cr>')
+vim.keymap.set('n', '<F2>', '<cmd>lua require"dap".step_into()<cr>')
+vim.keymap.set('n', '<F3>', '<cmd>lua require"dap".step_out()<cr>')
+vim.keymap.set('n', '<leader>b', '<cmd>lua require"dap".toggle_breakpoint()<cr>')
+vim.keymap.set('n', '<leader>B', '<cmd>lua require"dap".set_breakpoint("Breakpoint condition: ")<cr>')
+vim.keymap.set('n', '<leader>lp',
+  '<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<cr>')
+vim.keymap.set('n', '<leader>dr', '<cmd>lua require"dap".repl.open()<cr>')
+vim.keymap.set('n', '<leader>dl', '<cmd>lua require"dap".run_last()<cr>')
 
 dapui.setup()
 dap.listeners.after.event_initialized["dapui_config"] = function()
