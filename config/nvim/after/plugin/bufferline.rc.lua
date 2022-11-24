@@ -82,5 +82,5 @@ vim.keymap.set('n', 'ª', '<Cmd>BufferLineGoToBuffer 9<CR>')
 vim.keymap.set('n', '≤', '<Cmd>BufferLineMovePrev<CR>')
 vim.keymap.set('n', '≥', '<Cmd>BufferLineMoveNext<CR>')
 
-vim.keymap.set('n', '<leader>w', '<Cmd>BDelete this<CR>')
+vim.keymap.set('n', '<leader>w', '<Cmd>BDelete! this<CR>')
 vim.keymap.set('n', '<leader>W', '<Cmd>BWipeout other<CR>')

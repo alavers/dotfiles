@@ -13,7 +13,7 @@ vim.keymap.set('n', '<F1>', '<cmd>lua require"dap".step_over()<cr>')
 vim.keymap.set('n', '<F2>', '<cmd>lua require"dap".step_into()<cr>')
 vim.keymap.set('n', '<F3>', '<cmd>lua require"dap".step_out()<cr>')
 vim.keymap.set('n', '<leader>b', '<cmd>lua require"dap".toggle_breakpoint()<cr>')
-vim.keymap.set('n', '<leader>B', '<cmd>lua require"dap".set_breakpoint("Breakpoint condition: ")<cr>')
+vim.keymap.set('n', '<leader>B', '<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<cr>')
 vim.keymap.set('n', '<leader>lp',
   '<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<cr>')
 vim.keymap.set('n', '<leader>dr', '<cmd>lua require"dap".repl.open()<cr>')
