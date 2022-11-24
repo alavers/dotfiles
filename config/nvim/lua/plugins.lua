@@ -17,6 +17,7 @@ packer.startup(function(use)
   use 'L3MON4D3/LuaSnip'
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
+  use 'nvim-tree/nvim-tree.lua' -- file explorer
 
   use 'hrsh7th/nvim-cmp' -- Completion
   use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
