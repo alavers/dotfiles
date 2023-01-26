@@ -15,7 +15,7 @@ lualine.setup {
     lualine_c = { {
       'filename',
       file_status = true, -- displays file status
-      path = 0 -- 0 = just filename
+      path = 1 -- 0 = just filename
     } },
     lualine_x = {
       { 'diagnostics', sources = { 'nvim_diagnostic' }, symbols = { error = ' ', warn = ' ', info = ' ',
