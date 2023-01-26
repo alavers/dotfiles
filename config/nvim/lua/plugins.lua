@@ -45,6 +45,7 @@ packer.startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = function() require('nvim-treesitter.install').update({ with_sync = true }) end
   }
+  use 'nvim-treesitter/nvim-treesitter-context'
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
 
   use 'williamboman/mason.nvim'
@@ -70,4 +71,5 @@ packer.startup(function(use)
   use 'numToStr/Comment.nvim' -- Toggle comments
   use 'klen/nvim-test'
 
+  use 'google/vim-jsonnet'
 end)
