@@ -11,6 +11,9 @@ export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export CLICOLOR=1 # ls colors
+export PATH=$(pyenv root)/shims:$PATH
+export CLOUDSDK_PYTHON=python3
+export PATH=$HOME/.rbenv/shims:$PATH
 
 # env vars
 if [ -e ~/.vars ];then
@@ -27,7 +30,8 @@ alias vimo='nvim -u ~/.config/nvim/init-old.vim'
 alias vimdiff='nvim -d'
 
 # git aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
-alias gdca='git diff --cached'
+alias gd="git diff"
+alias gdca="git diff --cached"
 alias cleanbranches='git branch --merged | grep -v "\*" | grep -v master | grep -v dev | xargs -n 1 git branch -d'
 
 # docker aliases
@@ -35,9 +39,6 @@ alias dps="docker ps --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}
 alias dpsa="docker ps -a --format \"table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\""
 
 # kubectl aliases
-alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
-alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
-alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
 
 # common aliases https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/common-aliases/common-aliases.plugin.zsh
 alias l='ls -lFh'     #size,show type,human readable
@@ -183,7 +184,7 @@ init_rbenv() {
 }
 
 # Lazy load rbenv
-group_lazy_load init_rbenv rbenv ruby tmuxinator irb rake rails
+group_lazy_load init_rbenv rbenv ruby tmuxinator irb rake rails bundle scooter
 
 # Lazy load pyenv
 pyenv() {
@@ -218,6 +219,11 @@ zstyle ':completion:*' completer _expand _complete _files _correct _approximate
 
 # kubectl completion
 source <(kubectl completion zsh)
+alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
+alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
+# alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
+# complete -o default -F __start_kubectl k
+alias k=kubectl
 
 # Google cloud SDK completion
 source "`brew --prefix`/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
