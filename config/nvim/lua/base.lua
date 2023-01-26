@@ -43,3 +43,7 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- Sensible comment wrapping behavior
 vim.cmd [[autocmd FileType * setlocal formatoptions-=cro]]
+
+-- Spell check and wrap on md files
+vim.cmd [[autocmd BufRead,BufNewFile *.md setlocal spell]]
+vim.cmd [[autocmd BufRead,BufNewFile *.md setlocal wrap]]
