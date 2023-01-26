@@ -1,1 +1,1 @@
-vim.g['ackprg'] = 'ag --vimgrep'
+vim.g['ackprg'] = 'ag --path-to-ignore ~/.ignore --vimgrep'
