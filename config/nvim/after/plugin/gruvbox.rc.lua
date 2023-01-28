@@ -18,6 +18,10 @@ gruvbox.setup({
   transparent_mode = false,
   -- https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox/palette.lua
   palette_overrides = {
+    dark1 = "#332e2c",
+    dark2 = "#504945",
+    dark3 = "#665c54",
+    dark4 = "#7c6f64",
     bright_red = "#f2594b",
     bright_green = "#b0b846",
     bright_yellow = "#e9b143",
