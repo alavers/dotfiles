@@ -138,7 +138,8 @@ end
 
 vim.diagnostic.config({
   virtual_text = {
-    prefix = '●'
+    prefix = '●',
+    severity = { min = vim.diagnostic.severity.ERROR }
   },
   update_in_insert = true,
   float = {
