@@ -30,3 +30,6 @@ vim.keymap.set('n', 'gd', '<Cmd>Lspsaga lsp_finder<CR>', opts)
 vim.keymap.set('n', 'gp', '<Cmd>Lspsaga peek_definition<CR>', opts)
 vim.keymap.set('n', 'gr', '<Cmd>Lspsaga rename<CR>', opts)
 vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
+
+-- Adjust the flash when moving between diagnostics
+vim.api.nvim_set_hl(0, 'SagaBeacon', {})
