@@ -57,6 +57,7 @@ packer.startup(function(use)
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-file-browser.nvim'
+  use 'ThePrimeagen/harpoon'
 
   use 'akinsho/bufferline.nvim'
   use 'kazhala/close-buffers.nvim'

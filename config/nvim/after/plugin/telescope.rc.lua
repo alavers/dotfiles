@@ -49,6 +49,7 @@ telescope.setup {
 }
 
 telescope.load_extension('file_browser')
+telescope.load_extension('harpoon')
 
 local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>f',
