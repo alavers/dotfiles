@@ -15,6 +15,10 @@ export PATH=$(pyenv root)/shims:$PATH
 export CLOUDSDK_PYTHON=python3
 export PATH=$HOME/.rbenv/shims:$PATH
 
+# make tmux-256color work
+# https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
+
 # env vars
 if [ -e ~/.vars ];then
     source ~/.vars

@@ -47,3 +47,5 @@ vim.cmd [[autocmd FileType * setlocal formatoptions-=cro]]
 -- Spell check and wrap on md files
 vim.cmd [[autocmd BufRead,BufNewFile *.md setlocal spell]]
 vim.cmd [[autocmd BufRead,BufNewFile *.md setlocal wrap]]
+
+vim.g.loaded_perl_provider = 0

@@ -11,7 +11,7 @@ packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use 'mileszs/ack.vim' -- File search
-  use 'sainnhe/gruvbox-material'
+  use 'ellisonleao/gruvbox.nvim'
   use 'kyazdani42/nvim-web-devicons' -- File icons
   use 'glepnir/lspsaga.nvim' -- LSP UIs
   use 'L3MON4D3/LuaSnip'
