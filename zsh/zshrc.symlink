@@ -29,9 +29,16 @@ fi
 ########################################################
 
 # vim aliases
-alias vim='nvim'
-alias vimo='nvim -u ~/.config/nvim/init-old.vim'
+function vim(){
+  if [[ "$#" == 0 ]] ; then
+    # If no args, go back in the jump list on startup
+    nvim '+exec "normal \<C-O>"'
+  else
+    nvim $*
+  fi
+}
 alias vimdiff='nvim -d'
+
 
 # git aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 alias gd="git diff"
