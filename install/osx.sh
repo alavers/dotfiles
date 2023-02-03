@@ -182,6 +182,9 @@ defaults write com.apple.terminal StringEncodings -array 4
 echo "Turn off the fucking chime when pluggin in"
 defaults write com.apple.PowerChime ChimeOnNoHardware -bool true
 
+echo "Disable the press and hold character suggestor in macos"
+defaults write -g ApplePressAndHoldEnabled -bool false
+
 # echo "Disable the Ping sidebar in iTunes"
 # defaults write com.apple.iTunes disablePingSidebar -bool true
 
