@@ -3,13 +3,25 @@ if (not status) then return end
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
+local function has_value(tab, val)
+  for index, value in ipairs(tab) do
+    if value == val then
+      return true
+    end
+  end
+  return false
+end
+
+local exclude_format_on_save = { "markdown" }
 local lsp_formatting = function(bufnr)
-  vim.lsp.buf.format({
-    filter = function(client)
-      return client.name == "null-ls"
-    end,
-    bufnr = bufnr,
-  })
+  if (not has_value(exclude_format_on_save, vim.bo.filetype)) then
+    vim.lsp.buf.format({
+      filter = function(client)
+        return client.name == "null-ls"
+      end,
+      bufnr = bufnr,
+    })
+  end
 end
 
 null_ls.setup({
