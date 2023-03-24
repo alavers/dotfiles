@@ -20,8 +20,8 @@ local colors = {
 }
 
 gruvbox.setup({
-  undercurl = false,
-  underline = false,
+  undercurl = true,
+  underline = true,
   bold = true,
   italic = true,
   strikethrough = true,
@@ -37,22 +37,23 @@ gruvbox.setup({
     DiffAdd = { bg = colors.darkest_green, fg = "None", reverse = false },
     DiffDelete = { bg = colors.darkest_red, fg = "None", reverse = false },
     DiffText = { bg = colors.dark_blue, fg = "None", reverse = false },
+    GruvboxRedUnderline = { undercurl = true, sp = colors.bright_red },
   },
   dim_inactive = false,
   transparent_mode = false,
   -- https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox/palette.lua
   palette_overrides = {
-    dark1 = colors.dark1,
-    dark2 = colors.dark2,
-    dark3 = colors.dark3,
-    dark4 = colors.dark4,
-    bright_red = colors.bright_red,
-    bright_green = colors.bright_green,
-    bright_yellow = colors.bright_yellow,
-    bright_blue = colors.bright_blue,
-    bright_purple = colors.bright_purple,
-    bright_aqua = colors.bright_aqua,
-    bright_orange = colors.bright_orange,
+    -- dark1 = colors.dark1,
+    -- dark2 = colors.dark2,
+    -- dark3 = colors.dark3,
+    -- dark4 = colors.dark4,
+    -- bright_red = colors.bright_red,
+    -- bright_green = colors.bright_green,
+    -- bright_yellow = colors.bright_yellow,
+    -- bright_blue = colors.bright_blue,
+    -- bright_purple = colors.bright_purple,
+    -- bright_aqua = colors.bright_aqua,
+    -- bright_orange = colors.bright_orange,
   },
 })
 vim.cmd('colorscheme gruvbox')
