@@ -43,12 +43,10 @@ windows:
       layout: even-vertical
       panes:
         - npm run ts:watch
-        - npm run app:watch
-        - npm run workers:watch
-        - npm run webpack
-        - npm run service:websocket:watch
+        - npm run dev
   - misc:
+      root: ~/git/agent-console
       layout: main-horizontal
       panes:
         - ngrok start --all
-        - cd ~/git/agent-console && npm run containers
+        - npm run containers
