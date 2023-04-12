@@ -9,23 +9,23 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  use 'nvim-lua/plenary.nvim' -- Common utilities
+  use 'nvim-lua/plenary.nvim'        -- Common utilities
 
-  use 'mileszs/ack.vim' -- File search
+  use 'mileszs/ack.vim'              -- File search
   use 'ellisonleao/gruvbox.nvim'
   use 'kyazdani42/nvim-web-devicons' -- File icons
-  use 'glepnir/lspsaga.nvim' -- LSP UIs
+  use 'glepnir/lspsaga.nvim'         -- LSP UIs
   use 'L3MON4D3/LuaSnip'
-  use 'nvim-lualine/lualine.nvim' -- Statusline
-  use 'onsails/lspkind-nvim' -- vscode-like pictograms
-  use 'nvim-tree/nvim-tree.lua' -- file explorer
+  use 'nvim-lualine/lualine.nvim'    -- Statusline
+  use 'onsails/lspkind-nvim'         -- vscode-like pictograms
+  use 'nvim-tree/nvim-tree.lua'      -- file explorer
 
-  use 'hrsh7th/nvim-cmp' -- Completion
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
+  use 'hrsh7th/nvim-cmp'             -- Completion
+  use 'hrsh7th/cmp-buffer'           -- nvim-cmp source for buffer words
   use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
+  use 'hrsh7th/cmp-nvim-lsp'         -- nvim-cmp source for neovim's built-in LSP
   use 'hrsh7th/cmp-nvim-lua'
-  use 'saadparwaiz1/cmp_luasnip' -- Snippet completion
+  use 'saadparwaiz1/cmp_luasnip'     -- Snippet completion
 
   use 'sindrets/diffview.nvim'
 
@@ -36,11 +36,6 @@ packer.startup(function(use)
   use 'mfussenegger/nvim-dap'
   use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
   use { 'mxsdev/nvim-dap-vscode-js', requires = { 'mfussenegger/nvim-dap' } }
-  use {
-    "microsoft/vscode-js-debug",
-    opt = true,
-    run = "npm install --legacy-peer-deps && npm run compile"
-  }
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -70,7 +65,6 @@ packer.startup(function(use)
   use 'tpope/vim-unimpaired'
 
   use 'numToStr/Comment.nvim' -- Toggle comments
-  use 'klen/nvim-test'
 
   use 'google/vim-jsonnet'
 end)

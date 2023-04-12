@@ -92,7 +92,7 @@ nvim_lsp.tsserver.setup {
   },
 }
 
-nvim_lsp.sumneko_lua.setup {
+nvim_lsp.lua_ls.setup {
   capabilities,
   on_attach = function(client, buffer)
     on_attach(client, buffer)
