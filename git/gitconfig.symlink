@@ -2,7 +2,7 @@
 [user]
 	email = alavers@zendesk.com
     name = "Andrew Lavers"
-	signingKey = 17E32FF52AB93BFD
+	signingKey = 655D2D2D7DBE0A23
 [github]
     user = alavers
 [core]
@@ -95,3 +95,5 @@
 	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+[url "git@github.com:"]
+	insteadOf = https://github.com/
