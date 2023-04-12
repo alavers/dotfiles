@@ -15,7 +15,7 @@ suspended_jobs() {
     if [[ $sj == "" ]]; then
         echo ""
     else
-        echo "%{%F{208}%}✱%f"
+        echo "%{%F{yellow}%}✱%f"
     fi
 }
 
@@ -31,7 +31,7 @@ node_prompt() {
 
     [[ -n version ]] || return
 
-    dotfiles::print '029' "$node_icon $version"
+    dotfiles::print $color_aqua "$node_icon $version"
 }
 
 git_status_done() {
@@ -55,17 +55,17 @@ git_status() {
     local INDEX git_status=""
 
     GIT_SYMBOL="\ue725"
-    GIT_STATUS_ADDED=$(dotfiles::print '002' '+')
-    GIT_STATUS_MODIFIED=$(dotfiles::print '003' '!')
-    GIT_STATUS_UNTRACKED=$(dotfiles::print '009' '?')
-    GIT_STATUS_RENAMED=$(dotfiles::print '208' '»')
-    GIT_STATUS_DELETED=$(dotfiles::print '161' '✘')
-    GIT_STATUS_STASHED=$(dotfiles::print '003' '$')
-    GIT_STATUS_UNMERGED=$(dotfiles::print '016' '=')
-    GIT_STATUS_AHEAD=$(dotfiles::print '012' '⇡')
-    GIT_STATUS_BEHIND=$(dotfiles::print '011' '⇣')
-    GIT_STATUS_DIVERGED=$(dotfiles::print '012' '⇕')
-    GIT_STATUS_CLEAN=$(dotfiles::print '002' '✔')
+    GIT_STATUS_ADDED=$(dotfiles::print 'green' '+')
+    GIT_STATUS_MODIFIED=$(dotfiles::print 'yellow' '!')
+    GIT_STATUS_UNTRACKED=$(dotfiles::print 'red' '?')
+    GIT_STATUS_RENAMED=$(dotfiles::print 'yellow' '»')
+    GIT_STATUS_DELETED=$(dotfiles::print 'red' '✘')
+    GIT_STATUS_STASHED=$(dotfiles::print 'yellow' '$')
+    GIT_STATUS_UNMERGED=$(dotfiles::print 'white' '=')
+    GIT_STATUS_AHEAD=$(dotfiles::print 'blue' '⇡')
+    GIT_STATUS_BEHIND=$(dotfiles::print 'yellow' '⇣')
+    GIT_STATUS_DIVERGED=$(dotfiles::print 'blue' '⇕')
+    GIT_STATUS_CLEAN=$(dotfiles::print 'green' '✔')
 
     INDEX=$(command git status --porcelain -b 2>/dev/null)
 
@@ -139,7 +139,7 @@ git_status() {
     [[ -n "$git_status" ]] || git_status="$GIT_STATUS_CLEAN"
 
     dotfiles::bold "$git_status"
-    dotfiles::print '241' "$git_branch"
+    dotfiles::print 'white' "$git_branch"
 }
 
 async_init
@@ -147,10 +147,10 @@ async_start_worker vcs_info
 async_register_callback vcs_info git_status_done
 
 add-zsh-hook precmd () {
-    print -P "\n\e[1m%F{075}%~\e[0m $(node_prompt)"
+    print -P "\n\e[1m%F{blue}%~\e[0m $(node_prompt)"
     async_job vcs_info git_status "$PWD"
 }
 
 
-export PROMPT='%(?.%F{006}.%F{009})$PROMPT_SYMBOL%f '
+export PROMPT='%(?.%F{green}.%F{red})$PROMPT_SYMBOL%f '
 export RPROMPT="$(suspended_jobs)"
