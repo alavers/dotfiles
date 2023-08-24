@@ -113,20 +113,25 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
+nvim_lsp.solargraph.setup {
+  capabilities,
+  on_attach = on_attach
+}
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = true,
-  update_in_insert = false,
-  signs = {
-    severity_limit = 'Warning',
-  },
-  virtual_text = {
-    spacing = 4,
-    prefix = "●",
-    severity_limit = 'Warning'
-  },
-  severity_sort = true
-}
+    underline = true,
+    update_in_insert = false,
+    signs = {
+      severity_limit = 'Warning',
+    },
+    virtual_text = {
+      spacing = 4,
+      prefix = "●",
+      severity_limit = 'Warning'
+    },
+    severity_sort = true
+  }
 )
 
 -- Diagnostic symbols in the sign column (gutter)
