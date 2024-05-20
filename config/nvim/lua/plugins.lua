@@ -13,12 +13,20 @@ packer.startup(function(use)
 
   use 'mileszs/ack.vim'              -- File search
   use 'ellisonleao/gruvbox.nvim'
-  use 'kyazdani42/nvim-web-devicons' -- File icons
-  use 'glepnir/lspsaga.nvim'         -- LSP UIs
   use 'L3MON4D3/LuaSnip'
   use 'nvim-lualine/lualine.nvim'    -- Statusline
   use 'onsails/lspkind-nvim'         -- vscode-like pictograms
   use 'nvim-tree/nvim-tree.lua'      -- file explorer
+  use 'nvim-tree/nvim-web-devicons' -- File icons
+
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+        local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+        ts_update()
+    end,
+  }
+  use 'nvim-treesitter/nvim-treesitter-context'
 
   use 'hrsh7th/nvim-cmp'             -- Completion
   use 'hrsh7th/cmp-buffer'           -- nvim-cmp source for buffer words
@@ -30,18 +38,17 @@ packer.startup(function(use)
   use 'sindrets/diffview.nvim'
 
   use 'gpanders/editorconfig.nvim'
-  use 'neovim/nvim-lspconfig' -- LSP
+  use 'neovim/nvim-lspconfig'        -- LSP
+  use {
+    'nvimdev/lspsaga.nvim',
+    requires = {'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons'}
+  }
 
   -- Debug Adapter Protocol
   use 'mfussenegger/nvim-dap'
   use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
   use { 'mxsdev/nvim-dap-vscode-js', requires = { 'mfussenegger/nvim-dap' } }
 
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end
-  }
-  use 'nvim-treesitter/nvim-treesitter-context'
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
 
   use 'williamboman/mason.nvim'

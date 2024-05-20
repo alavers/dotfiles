@@ -12,5 +12,6 @@ prettier.setup {
     'json',
     'scss',
     'less'
-  }
+  },
+  autoformat = false
 }

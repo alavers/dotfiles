@@ -2,6 +2,9 @@ local keymap = vim.keymap
 
 vim.g.mapleader = ','
 
+-- Ctrl-C has subtle differences to Esc. Elimiate those differences
+keymap.set('i', '<C-c>', '<Esc>', { noremap = true })
+
 -- Toggle quickfix window
 keymap.set('n', '<leader>q', ':copen 40<cr>', { silent = true })
 keymap.set('n', '<leader>a', ':copen 10<cr>', { silent = true })
@@ -26,7 +29,7 @@ keymap.set('n', 'x', '"_x')
 keymap.set('v', 'p', '"+P')
 
 -- Copy current file path to clipboard
-keymap.set('n', '<Leader>fp', ':let @*=expand("%:p")<cr>')
+keymap.set('n', '<Leader>cp', ':let @*=expand("%:p")<cr>')
 
 -- Increment/decrement
 keymap.set('n', '+', '<C-a>')

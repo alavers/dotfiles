@@ -8,7 +8,7 @@ ts.setup {
   },
   indent = {
     enable = true,
-    disable = {}
+    disable = {},
   },
   ensure_installed = {
     'markdown',
@@ -17,10 +17,8 @@ ts.setup {
     'json',
     'css',
     'javascript',
-    'typescript'
-  },
-  autotag = {
-    enable = true
+    'typescript',
+    'ruby'
   }
 }
 

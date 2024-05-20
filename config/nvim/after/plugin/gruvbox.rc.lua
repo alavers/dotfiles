@@ -20,7 +20,7 @@ local colors = {
 }
 
 gruvbox.setup({
-  undercurl = true,
+  undercurl = false,
   underline = true,
   bold = true,
   italic = {

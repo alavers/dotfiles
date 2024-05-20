@@ -4,14 +4,55 @@ if (not status) then return end
 -- below is missing in https://github.com/craftzdog/dotfiles-public/blob/master/.config/nvim/plugin/lspconfig.lua
 local protocol = require('vim.lsp.protocol')
 
-local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
-local enable_format_on_save = function(_, bufnr)
-  vim.api.nvim_clear_autocmds({ group = augroup_format, buffer = bufnr })
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = augroup_format,
-    buffer = bufnr,
-    callback = function()
-      vim.lsp.buf.format({ bufnr = bufnr })
+-- local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
+-- local enable_format_on_save = function(_, bufnr)
+--   vim.api.nvim_clear_autocmds({ group = augroup_format, buffer = bufnr })
+--   vim.api.nvim_create_autocmd("BufWritePre", {
+--     group = augroup_format,
+--     buffer = bufnr,
+--     callback = function()
+--       vim.lsp.buf.format({ bufnr = bufnr })
+--     end,
+--   })
+-- end
+
+_timers = {}
+local function setup_diagnostics(client, buffer)
+  if require("vim.lsp.diagnostic")._enable then
+    return
+  end
+
+  local diagnostic_handler = function()
+    local params = vim.lsp.util.make_text_document_params(buffer)
+    client.request("textDocument/diagnostic", { textDocument = params }, function(err, result)
+      if err then
+        local err_msg = string.format("diagnostics error - %s", vim.inspect(err))
+        vim.lsp.log.error(err_msg)
+      end
+      if not result then
+        return
+      end
+      vim.lsp.diagnostic.on_publish_diagnostics(
+        nil,
+        vim.tbl_extend("keep", params, { diagnostics = result.items }),
+        { client_id = client.id }
+      )
+    end)
+  end
+
+  diagnostic_handler() -- to request diagnostics on buffer when first attaching
+
+  vim.api.nvim_buf_attach(buffer, false, {
+    on_lines = function()
+      if _timers[buffer] then
+        vim.fn.timer_stop(_timers[buffer])
+      end
+      _timers[buffer] = vim.fn.timer_start(200, diagnostic_handler)
+    end,
+    on_detach = function()
+      if _timers[buffer] then
+        vim.fn.timer_stop(_timers[buffer])
+      end
     end,
   })
 end
@@ -39,15 +80,35 @@ local on_attach = function(_, bufnr)
   local opts = { noremap = true, silent = true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<leader>d', '<Cmd>lua toggle_diagnostics()<CR>', opts)
-
+  -- buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  -- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  -- buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  -- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  -- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  -- buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  -- buf_set_keymap('n', '<leader>d', ':lua toggle_diagnostics()<CR>', opts)
+  -- buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', opts)
   -- lspsaga does these better
-  --buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  --buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  --buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 end
+
+-- Set maps globally as well?
+local keymap = vim.keymap
+keymap.set('n', '<leader>d', ':lua toggle_diagnostics()<CR>', { silent = true })
+keymap.set('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', { silent = true })
 
 protocol.CompletionItemKind = {
   '', -- Text
@@ -94,15 +155,16 @@ nvim_lsp.tsserver.setup {
 
 nvim_lsp.lua_ls.setup {
   capabilities,
-  on_attach = function(client, buffer)
-    on_attach(client, buffer)
-    enable_format_on_save(client, buffer)
-  end,
+  on_attach = on_attach,
+  -- on_attach = function(client, buffer)
+  --   on_attach(client, buffer)
+  --   enable_format_on_save(client, buffer)
+  -- end,
   settings = {
     Lua = {
       diagnostics = {
         -- Get the language server to recognize the 'vim' global
-        globals = { 'vim' }
+        globals = { 'vim', 'redis', 'KEYS', 'ARGV' }
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
@@ -120,22 +182,22 @@ nvim_lsp.solargraph.setup {
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = true,
+    underline = false,
     update_in_insert = false,
     signs = {
-      severity_limit = 'Warning',
+      severity = { min = vim.diagnostic.severity.WARNING }
     },
     virtual_text = {
       spacing = 4,
       prefix = "●",
-      severity_limit = 'Warning'
+      severity = { min = vim.diagnostic.severity.WARNING }
     },
     severity_sort = true
   }
 )
 
 -- Diagnostic symbols in the sign column (gutter)
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
@@ -151,3 +213,5 @@ vim.diagnostic.config({
     source = "always", -- Or "if_many"
   }
 })
+
+-- require('toggle_lsp_diagnostics').init(vim.diagnostic.config())
