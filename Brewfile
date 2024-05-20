@@ -27,3 +27,4 @@ brew "reattach-to-user-namespace" # reliable access to MacOS pasteboard when in 
 brew "diff-so-fancy" # nicer git diffs
 brew "rbenv"
 brew "ruby-build"
+brew "direnv"
