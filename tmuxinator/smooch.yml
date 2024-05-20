@@ -38,15 +38,3 @@ windows:
       layout: main-vertical
       panes:
         - vim
-  - server:
-      root: ~/git/agent-console
-      layout: even-vertical
-      panes:
-        - npm run ts:watch
-        - npm run dev
-  - misc:
-      root: ~/git/agent-console
-      layout: main-horizontal
-      panes:
-        - ngrok start --all
-        - npm run containers

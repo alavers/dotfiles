@@ -13,7 +13,9 @@ export PATH=$PATH:$GOPATH/bin
 export CLICOLOR=1 # ls colors
 export PATH=$(pyenv root)/shims:$PATH
 export CLOUDSDK_PYTHON=python3
-export PATH=$HOME/.rbenv/shims:$PATH
+
+# rbenv init already does this 
+# export PATH=$HOME/.rbenv/shims:$PATH
 
 ## java 11
 # export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
@@ -185,12 +187,15 @@ group_lazy_load() {
     done
 }
 
-init_rbenv() {
-  eval "$(rbenv init -)"
-}
+eval "$(rbenv init -)"
 
+# init_rbenv() {
+#   eval "$(rbenv init -)"
+# }
+#
 # Lazy load rbenv
-group_lazy_load init_rbenv rbenv ruby tmuxinator irb rake rails bundle scooter
+# group_lazy_load init_rbenv rbenv ruby tmuxinator irb rake rails bundle scooter
+group_lazy_load rbenv ruby tmuxinator irb rake rails bundle scooter
 
 # Lazy load pyenv
 pyenv() {
@@ -256,3 +261,12 @@ source "$DOTFILES/zsh/prompt.zsh"
 if [[ -a ~/.localrc ]]; then
     source ~/.localrc
 fi
+
+# gh completion
+eval "$(gh completion -s zsh)"
+# BEGIN ZDI
+export DOCKER_FOR_MAC_ENABLED=true
+source /Users/alavers/Code/zendesk/zdi/dockmaster/zdi.sh
+# END ZDI
+
+eval "$(direnv hook zsh)"

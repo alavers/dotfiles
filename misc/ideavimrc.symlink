@@ -10,3 +10,12 @@ nmap <leader>, :w<cr>
 "quickly edit/reload the vimrc file
 nmap <silent> <leader>cv :e ~/.ideavimrc<cr>
 nmap <silent> <leader>sv :so ~/.ideavimrc<cr>
+
+
+" Delete and visual replace without replacing clipboard
+vmap p "+P
+
+Plug 'tpope/vim-surround'
+Plug 'preservim/nerdtree'
+
+map <c-n> :NERDTree<CR>

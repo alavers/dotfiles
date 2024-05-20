@@ -12,8 +12,11 @@
     ui = true
     excludesfile = ~/.gitignore_global
     whitespace = cr-at-eol
-    pager = diff-so-fancy | less --tabs=4 -RFX
+  # pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = delta
 	attributesfile = ~/.gitattributes
+[interactive]
+  diffFilter = delta --color-only
 [credential]
 [code]
     autocrlf = false
@@ -52,10 +55,17 @@
     # Show churn for a time range:
     #   $ git churn --since='1 month ago'
     churn = "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
+[delta]
+    navigate = true    # use n and N to move between diff sections
+
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    # light = true
 [diff]
 	tool = smerge
     compactionHeuristic = true
     indentHeuristic = true
+  colorMoved = default
 [difftool]
     prompt = true
 [difftool "vimdiff"]
@@ -63,8 +73,8 @@
 [difftool "smerge"]
 	cmd = smerge \"$BASE\" \"$LOCAL\" \"$REMOTE\"
 [merge]
-    tool = vimdiff
-    # conflictstyle = diff3
+    # tool = vimdiff
+    conflictstyle = diff3
 [mergetool]
     prompt = true
 [mergetool "vimdiff"]
