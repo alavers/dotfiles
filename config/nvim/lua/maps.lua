@@ -67,7 +67,7 @@ keymap.set('n', '<ScrollWheelRight>', '<nop>');
 
 -- white people are uncomfortable with saying the word 'master' in front of black people so they
 -- sometimes rename a repo default branch from master to main. Thus, this bullshit becomes necessary
-function default_branch()
+local function default_branch()
   return vim.fn.system([[git branch -l master main | sed 's/^* //' | tr -d '[:space:]']])
 end
 
