@@ -55,10 +55,18 @@ lvim.keys.insert_mode["<ScrollWheelRight>"] = "<nop>"
 -- save with ,,
 lvim.keys.normal_mode[",,"] = ":w<cr>"
 
+-- snippets with telescope
 lvim.builtin.which_key.mappings["s"]["s"] = {
   "<cmd>lua require('telescope').extensions.luasnip.luasnip{}<cr>",
   "Snippets"
 }
+
+-- Clear search highlight with enter
+lvim.keys.normal_mode["<CR>"] = ":nohl<CR>"
+
+-- Tab through buffers
+lvim.keys.normal_mode["<Tab>"] = ":bnext<CR>"
+lvim.keys.normal_mode["<S-Tab>"] = ":bprev<CR>"
 
 ------------------------
 -- Treesitter
