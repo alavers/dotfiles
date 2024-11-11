@@ -91,9 +91,6 @@ vim.api.nvim_create_user_command(
   { desc = 'Send given string to telescope live_grep', nargs = 1 }
 )
 
--- Clear search highlight with enter
-lvim.keys.normal_mode["<CR>"] = ":nohl<CR>"
-
 -- Tab through buffers
 lvim.keys.normal_mode["<Tab>"] = ":bnext<CR>"
 lvim.keys.normal_mode["<S-Tab>"] = ":bprev<CR>"
