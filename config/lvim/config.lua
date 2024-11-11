@@ -55,11 +55,41 @@ lvim.keys.insert_mode["<ScrollWheelRight>"] = "<nop>"
 -- save with ,,
 lvim.keys.normal_mode[",,"] = ":w<cr>"
 
+------------------------
+-- Telescope config
+------------------------
+
+-- https://gitlab.com/lostneophyte/dotfiles/-/blob/5d49006532bf57db9f7e09564cb43010f631c571/lvim/.config/lvim/lua/user/telescope.lua
+lvim.builtin.telescope.defaults.layout_strategy = "flex"
+lvim.builtin.telescope.defaults.layout_config = {
+  prompt_position = "top",
+  height = 0.9,
+  width = 0.9,
+  horizontal = {
+    preview_width = 0.5,
+  },
+  vertical = {
+    preview_cutoff = 40,
+  },
+  flex = {
+    flip_columns = 150,
+  },
+}
+
 -- snippets with telescope
 lvim.builtin.which_key.mappings["s"]["s"] = {
   "<cmd>lua require('telescope').extensions.luasnip.luasnip{}<cr>",
   "Snippets"
 }
+
+local telescope = require('telescope.builtin')
+vim.api.nvim_create_user_command(
+  'Ack',
+  function(opts)
+    telescope.live_grep({ default_text = opts.args, initial_mode = 'normal' })
+  end,
+  { desc = 'Send given string to telescope live_grep', nargs = 1 }
+)
 
 -- Clear search highlight with enter
 lvim.keys.normal_mode["<CR>"] = ":nohl<CR>"
@@ -82,7 +112,7 @@ lvim.builtin.treesitter.ensure_installed = {
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "goimports", filetypes = { "go" } },
-  { command = "gofumpt", filetypes = { "go" } },
+  { command = "gofumpt",   filetypes = { "go" } },
 }
 
 lvim.format_on_save = {
