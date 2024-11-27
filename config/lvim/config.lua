@@ -82,6 +82,24 @@ lvim.builtin.which_key.mappings["s"]["s"] = {
   "Snippets"
 }
 
+-- git_files
+lvim.builtin.which_key.mappings["s"]["g"] = {
+  "<cmd>Telescope git_files<cr>",
+  "Git files"
+}
+
+-- better find files
+lvim.builtin.which_key.mappings["f"] = {
+  "<cmd>Telescope find_files<cr>",
+  "Find files"
+}
+
+-- Which key binds
+lvim.builtin.which_key.mappings["b"]["o"] = {
+  "<cmd>BufferLineCloseOthers<cr>",
+  "Close others"
+}
+
 local telescope = require('telescope.builtin')
 vim.api.nvim_create_user_command(
   'Ack',
