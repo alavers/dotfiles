@@ -229,10 +229,16 @@ zstyle ':completion:*' insert-tab pending
 # default to file completion
 zstyle ':completion:*' completer _expand _complete _files _correct _approximate
 
-# kubectl completion
-source <(kubectl completion zsh)
-alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
-alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
+# kubectl completion (disabled because kubectl_stuff does this already)
+# source <(kubectl completion zsh)
+
+# zendesk kubectl shell stuff
+if [ -e $ZENDESK_CODE_DIR/kubectl_config ];then
+  source $ZENDESK_CODE_DIR/kubectl_config/dotfiles/kubectl_stuff.bash
+fi
+
+# alias podver="kubectl get pods -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\t\t\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
+# alias k8s-get-pod-uptime='(echo '\''POD_NAME BOOT_DATE'\''; kubectl get pods -o=jsonpath='\''{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.running.startedAt}{"\n"}{end}'\'' | sort -k2) | column -t'
 # alias k='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
 # complete -o default -F __start_kubectl k
 alias k=kubectl
@@ -271,3 +277,9 @@ source /Users/alavers/Code/zendesk/zdi/dockmaster/zdi.sh
 # END ZDI
 
 eval "$(direnv hook zsh)"
+
+
+# scooter completion
+if [ -e $ZENDESK_CODE_DIR/scooter ];then
+  source $ZENDESK_CODE_DIR/scooter/scripts/shell/scooter.sh
+fi
