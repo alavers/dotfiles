@@ -94,6 +94,12 @@ lvim.builtin.which_key.mappings["f"] = {
   "Find files"
 }
 
+-- file symbols
+lvim.builtin.which_key.mappings["s"]["d"] = {
+  "<cmd>Telescope lsp_document_symbols<cr>",
+  "Document symbols"
+}
+
 -- Which key binds
 lvim.builtin.which_key.mappings["b"]["o"] = {
   "<cmd>BufferLineCloseOthers<cr>",
@@ -108,6 +114,7 @@ vim.api.nvim_create_user_command(
   end,
   { desc = 'Send given string to telescope live_grep', nargs = 1 }
 )
+
 
 -- Tab through buffers
 lvim.keys.normal_mode["<Tab>"] = ":bnext<CR>"
