@@ -129,13 +129,21 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 
 ------------------------
+-- Linting
+------------------------
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { command = "eslint_d", filetypes = { "javascript", "typescript", "typescriptreact" } }
+}
+
+------------------------
 -- Formatting
 ------------------------
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "goimports", filetypes = { "go" } },
   { command = "gofumpt",   filetypes = { "go" } },
-  { name = "prettier", filetypes = { "javascript", "typescript", "typescriptreact" } }
+  { name = "prettierd", filetypes = { "javascript", "typescript", "typescriptreact" } }
 }
 
 lvim.format_on_save = {
