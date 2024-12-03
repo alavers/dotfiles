@@ -27,6 +27,11 @@ lvim.plugins = {
   },
 
   'tpope/vim-surround',
+  {
+    "tpope/vim-fugitive",
+    cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
+    ft = { "fugitive" }
+  },
   'benfowler/telescope-luasnip.nvim',
 
   -- Theme
@@ -40,11 +45,46 @@ lvim.plugins = {
 vim.opt.relativenumber = true
 lvim.colorscheme = "gruvbox"
 
+
+-- Quickfix window Toggler
+-- https://www.reddit.com/r/neovim/comments/ol2vx4/how_to_toggle_quickfix_with_lua/
+_G.toggle_qf = function()
+  local qf_exists = false
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      qf_exists = true
+    end
+  end
+  if qf_exists == true then
+    vim.cmd "cclose"
+    return
+  end
+  if not vim.tbl_isempty(vim.fn.getqflist()) then
+    vim.cmd "copen"
+  end
+end
+
+_G.toggle_qf_height = function()
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      if (win["height"] >= 40) then
+        vim.cmd "copen 10"
+      else
+        vim.cmd "copen 40"
+      end
+    end
+  end
+end
+
 -- Binds https://www.lunarvim.org/docs/configuration/keybindings
 --
 ------------------------
 -- Key binds
 ------------------------
+
+-- Quickfix window
+lvim.builtin.which_key.mappings["z"] = { "<cmd>lua toggle_qf()<cr>", "Toggle Quickfix" }
+lvim.builtin.which_key.mappings["a"] = { "<cmd>lua toggle_qf_height()<cr>", "Toggle Quickfix Height" }
 
 -- Disable horizontal trackpad scrolling
 lvim.keys.normal_mode["<ScrollWheelLeft>"] = "<nop>"
@@ -143,7 +183,7 @@ local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "goimports", filetypes = { "go" } },
   { command = "gofumpt",   filetypes = { "go" } },
-  { name = "prettierd", filetypes = { "javascript", "typescript", "typescriptreact" } }
+  { name = "prettierd",    filetypes = { "javascript", "typescript", "typescriptreact" } }
 }
 
 lvim.format_on_save = {
