@@ -5,6 +5,10 @@ autoload -U "$DOTFILES/zsh/functions/zfetch"
 autoload -U compinit add-zsh-hook
 compinit
 
+autoload -U edit-command-line
+zle -N edit-command-line 
+
+
 export GPG_TTY=$(tty)
 export SHELL=$(which zsh)
 export PATH=$HOME/Library/Android/sdk/platform-tools:$PATH
@@ -15,11 +19,18 @@ export CLICOLOR=1 # ls colors
 export PATH=$(pyenv root)/shims:$PATH
 export CLOUDSDK_PYTHON=python3
 
+# export JAVA_HOME=$(/usr/libexec/java_home -v 11) 
+# export JAVA_HOME=$(/usr/libexec/java_home -v 17) 
+# export PATH=$JAVA_HOME/bin:$PATH
+
+export PATH=/opt/nvim/bin:$PATH
+
 # rbenv init already does this 
 # export PATH=$HOME/.rbenv/shims:$PATH
 
 ## java 11
 # export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+
 
 # make tmux-256color work
 # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
@@ -88,11 +99,14 @@ setopt SHARE_HISTORY             # share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a duplicate.
 setopt COMPLETE_ALIASES
 
+# set -o vi
+
 ########################################################
 # Bindings
 ########################################################
 
 # make terminal command navigation sane again
+bindkey '^X^E' edit-command-line
 bindkey "^[[1;5C" forward-word                      # [Ctrl-right] - forward one word
 bindkey "^[[1;5D" backward-word                     # [Ctrl-left] - backward one word
 bindkey '^[^[[C' forward-word                       # [Ctrl-right] - forward one word
@@ -117,10 +131,12 @@ bindkey "^P" up-line-or-search                      # [Ctrl-p] - previous comman
 bindkey "^N" down-line-or-search                    # [Ctrl-n] - next command
 bindkey "^J" history-beginning-search-forward
 bindkey "^K" history-beginning-search-backward
+bindkey '^g' clear-screen
 
 ########################################################
 # Util functions
 ########################################################
+#
 
 # pretty unix timestamp
 function tz {
@@ -146,14 +162,26 @@ function keys() {
     ssh-add --apple-use-keychain ~/.ssh/alavers@zendesk.com
 }
 
+# Mocha in watch mode has a bug that hides the cursor. This restores it.
+function c {
+  echo "\x1B[?25h"
+}
+
+function mw {
+    npm run mocha:watch -- --grep "$*"
+}
+
 ########################################################
 # Lazy loading, node, ruby, python
 ########################################################
 
 # fnm = fast node version manager
-if [[ -x "$(command -v fnm)" ]]; then
-    eval "$(fnm env --use-on-cd)"
-fi
+# if [[ -x "$(command -v fnm)" ]]; then
+#     eval "$(fnm env --use-on-cd)"
+# fi
+
+eval "$(fnm env --use-on-cd)"
+eval "$(jenv init -)"
 
 # https://gist.github.com/QinMing/364774610afc0e06cc223b467abe83c0
 lazy_load() {

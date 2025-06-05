@@ -3,5 +3,6 @@ export CACHEDIR="$HOME/.local/share"
 
 [[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
 
-export EDITOR='nvim'
-export GIT_EDITOR='nvim'
+export EDITOR='lvim'
+export VISUAL='lvim'
+export GIT_EDITOR='lvim'
