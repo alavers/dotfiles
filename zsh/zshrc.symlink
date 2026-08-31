@@ -1,3 +1,12 @@
+export DOTFILES="$(dirname "$(dirname "$(readlink "${(%):-%N}")")")"
+export CACHEDIR="$HOME/.local/share"
+
+[[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
+
+export EDITOR='lvim'
+export VISUAL='lvim'
+export GIT_EDITOR='lvim'
+
 # zfetch is a tiny plugin manager
 autoload -U "$DOTFILES/zsh/functions/zfetch"
 
@@ -74,6 +83,13 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
+
+# function npm_warn {
+#     echo "use pnpm"
+# }
+# alias npm='npm_warn'
+alias pn=pnpm
+
 ########################################################
 # Zsh options https://zsh.sourceforge.io/Guide/zshguide02.html
 ########################################################
@@ -133,6 +149,15 @@ bindkey "^J" history-beginning-search-forward
 bindkey "^K" history-beginning-search-backward
 bindkey '^g' clear-screen
 
+# Enable Shift+Enter to insert a newline without executing the command
+shift-enter-newline() {
+    zle .accept-line
+    BUFFER=""
+    zle .reset-prompt
+}
+zle -N shift-enter-newline
+bindkey "^[^M" shift-enter-newline
+
 ########################################################
 # Util functions
 ########################################################
@@ -167,8 +192,30 @@ function c {
   echo "\x1B[?25h"
 }
 
+function mg {
+    npm run mocha -- --grep "$*"
+}
+
 function mw {
     npm run mocha:watch -- --grep "$*"
+}
+
+function mb {
+  local src_file="$1"
+  shift
+  local dist_file="${src_file/#src/dist}"
+  dist_file="${dist_file%.ts}.js"
+  npm run mocha:base -- "$dist_file" "$@"
+}
+
+function system_jwt {
+  npm run sign-jwt -- \
+      --keyId "$SUNCO_AGENT_WORKSPACE_SYSTEM_KEY_ID" \
+      --secret "$SUNCO_AGENT_WORKSPACE_SYSTEM_KEY_SECRET" \
+      --scope app \
+      --zendeskAccountId $ACCOUNT_ID \
+      --useSystemJwtDefaults \
+      --nonInteractive
 }
 
 ########################################################
@@ -180,7 +227,8 @@ function mw {
 #     eval "$(fnm env --use-on-cd)"
 # fi
 
-eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd --shell zsh)"
+
 eval "$(jenv init -)"
 
 # https://gist.github.com/QinMing/364774610afc0e06cc223b467abe83c0
@@ -299,10 +347,6 @@ fi
 
 # gh completion
 eval "$(gh completion -s zsh)"
-# BEGIN ZDI
-export DOCKER_FOR_MAC_ENABLED=true
-source /Users/alavers/Code/zendesk/zdi/dockmaster/zdi.sh
-# END ZDI
 
 eval "$(direnv hook zsh)"
 
@@ -311,3 +355,16 @@ eval "$(direnv hook zsh)"
 if [ -e $ZENDESK_CODE_DIR/scooter ];then
   source $ZENDESK_CODE_DIR/scooter/scripts/shell/scooter.sh
 fi
+# BEGIN ZDI
+source /Users/alavers/Code/zendesk/zdi/dockmaster/zdi.sh
+# END ZDI
+
+# pnpm
+export PNPM_HOME="/Users/alavers/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+[[ -f .node-version || -f .nvmrc ]] && fnm use --silent-if-unchanged 2>/dev/null || true

@@ -1,8 +1,0 @@
-export DOTFILES="$(dirname "$(dirname "$(readlink "${(%):-%N}")")")"
-export CACHEDIR="$HOME/.local/share"
-
-[[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
-
-export EDITOR='lvim'
-export VISUAL='lvim'
-export GIT_EDITOR='lvim'

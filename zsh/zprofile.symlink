@@ -17,6 +17,4 @@ elif [[ -d /home/linuxbrew/.linuxbrew ]]; then
     test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-
-
-
+export NODE_USE_SYSTEM_CA=1
