@@ -3,3 +3,8 @@
 -- Add any additional keymaps here
 
 require("config.quickfix")
+
+-- Disable horizontal trackpad scrolling.
+for _, key in ipairs({ "<ScrollWheelLeft>", "<ScrollWheelRight>" }) do
+  vim.keymap.set({ "n", "i" }, key, "<Nop>", { desc = "Disable horizontal trackpad scrolling" })
+end
