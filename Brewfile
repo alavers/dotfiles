@@ -28,3 +28,4 @@ brew "diff-so-fancy" # nicer git diffs
 brew "rbenv"
 brew "ruby-build"
 brew "direnv"
+brew "luarocks"

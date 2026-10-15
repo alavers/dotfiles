@@ -3,9 +3,9 @@ export CACHEDIR="$HOME/.local/share"
 
 [[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
 
-export EDITOR='lvim'
-export VISUAL='lvim'
-export GIT_EDITOR='lvim'
+export EDITOR='nvim'
+export VISUAL='nvim'
+export GIT_EDITOR='nvim'
 
 # zfetch is a tiny plugin manager
 autoload -U "$DOTFILES/zsh/functions/zfetch"
@@ -54,7 +54,7 @@ fi
 # Aliases
 ########################################################
 
-alias vim='lvim'
+alias vim='nvim'
 alias vimdiff='nvim -d'
 
 
