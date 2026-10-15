@@ -368,3 +368,6 @@ esac
 # pnpm end
 
 [[ -f .node-version || -f .nvmrc ]] && fnm use --silent-if-unchanged 2>/dev/null || true
+
+# opencode
+export PATH=/Users/alavers/.opencode/bin:$PATH

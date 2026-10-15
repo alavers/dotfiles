@@ -1,10 +1,14 @@
 #gitconfig
 [user]
 	email = alavers@zendesk.com
-    name = "Andrew Lavers"
+  name = "Andrew Lavers"
 	signingKey = 655D2D2D7DBE0A23
 [github]
     user = alavers
+[url "git@github.com:"]
+ 	insteadOf = https://github.com/
+; [url "https://github.com/"]
+;     insteadOf = git@github.com:
 [core]
     autocrlf = false
     excludesfile = /Users/andrew/.gitignore
@@ -66,22 +70,33 @@
     compactionHeuristic = true
     indentHeuristic = true
   colorMoved = default
+	guitool = meld
 [difftool]
     prompt = true
 [difftool "vimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-[difftool "smerge"]
-	cmd = smerge \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+; [difftool "smerge"]
+; 	cmd = smerge \"$BASE\" \"$LOCAL\" \"$REMOTE\"
 [merge]
-    # tool = vimdiff
-    conflictstyle = diff3
+  tool = bcomp
+  # tool = meld
+  # tool = intellij
+  # tool = vimdiff
+  # conflictstyle = diff3
 [mergetool]
-    prompt = true
+  prompt = false
+  keepBackup = false
+[mergetool "bcomp"]
+  trustExitCode = true
+  # cmd = "/usr/local/bin/bcomp" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+  cmd = "/usr/local/bin/bcomp" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
+[mergetool "intellij"]
+  cmd = '/Applications/IntelliJ IDEA.app/Contents/macOS/idea' merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
+  trustExitCode = true
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-[mergetool "smerge"]
-  cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
-[heroku]
+; [mergetool "smerge"]
+;   cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
 [init]
     templatedir = /Users/alavers/.git-templates
 [filter "lfs"]
@@ -105,5 +120,5 @@
 	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-[url "git@github.com:"]
+[url "ssh://git@github.com/"]
 	insteadOf = https://github.com/

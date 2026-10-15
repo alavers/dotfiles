@@ -27,3 +27,8 @@ tscommand*.txt
 
 .env-*
 .vimlocal
+
+CLAUDE.md
+.claude
+
+.codex

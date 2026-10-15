@@ -11,6 +11,8 @@
 -- More examples https://www.lunarvim.org/docs/faq#where-can-i-find-some-example-configs
 ------------------------
 
+vim.cmd.packadd("cfilter")
+
 lvim.plugins = {
   {
     "ThePrimeagen/harpoon",
@@ -58,11 +60,12 @@ lvim.plugins = {
     version = false, -- Never set this value to "*"! Never!
     opts = {
       provider = "zendesk",
-      vendors = {
+      providers = {
         zendesk = {
           api_key_name = "OPENAI_API_KEY",
           endpoint = "https://ai-gateway.zende.sk/v1/",
-          model = "gpt-4o",
+          model = "gpt-4.1",
+          -- model = "gpt-4o",
           -- model = "claude-3.5-sonnet",
           __inherited_from = "openai",
         },
@@ -122,7 +125,7 @@ lvim.plugins = {
         ft = { "markdown", "Avante" },
       },
     },
-  }
+  },
 }
 
 vim.opt.relativenumber = true
@@ -383,17 +386,17 @@ lsp_manager.setup("gopls", {
   },
 })
 
-local status_ok, gopher = pcall(require, "gopher")
-if not status_ok then
-  return
-end
+-- local status_ok, gopher = pcall(require, "gopher")
+-- if not status_ok then
+--   return
+-- end
 
-gopher.setup {
-  commands = {
-    go = "go",
-    gomodifytags = "gomodifytags",
-    gotests = "gotests",
-    impl = "impl",
-    iferr = "iferr",
-  },
-}
+-- gopher.setup {
+--   commands = {
+--     go = "go",
+--     gomodifytags = "gomodifytags",
+--     gotests = "gotests",
+--     impl = "impl",
+--     iferr = "iferr",
+--   },
+-- }
