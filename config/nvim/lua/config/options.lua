@@ -8,3 +8,5 @@ vim.g.python3_host_prog = vim.fn.expand("~/.local/share/nvim/python3/bin/python"
 -- Set to "solargraph" to use solargraph instead of ruby_lsp.
 vim.g.lazyvim_ruby_lsp = "ruby_lsp"
 vim.g.lazyvim_ruby_formatter = "rubocop"
+
+vim.g.lazyvim_prettier_needs_config = true
